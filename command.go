@@ -8,7 +8,7 @@ import (
 func GetRespTime(com string) time.Duration {
 	switch cmd := com; {
 	case cmd == "bringup":
-		return 2
+		return 3
 	}
 	return 1
 }

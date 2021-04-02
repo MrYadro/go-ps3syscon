@@ -32,11 +32,18 @@ func NewSyscon(pName, sMode string) Syscon {
 }
 
 func (sc Syscon) SendCommand(com string) {
-	n, err := sc.port.Write([]byte(com + "\r\n"))
-	if err != nil {
-		log.Fatal(err)
+	switch sc.mode {
+	case "cxr":
+		fmt.Println("Not implemened")
+	case "cxrf":
+		n, err := sc.port.Write([]byte(com + "\r\n"))
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("Sent %v bytes\n", n)
+	case "sw":
+		fmt.Println("Not implemened")
 	}
-	fmt.Printf("Sent %v bytes\n", n)
 }
 
 func (sc Syscon) ReceiveCommand() string {
