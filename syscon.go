@@ -8,7 +8,7 @@ import (
 	"go.bug.st/serial"
 )
 
-func NewSyscon(pName, sMode string) Syscon {
+func newSyscon(pName, sMode string) syscon {
 	var mode *serial.Mode
 	switch sMode {
 	case "cxrf":
@@ -28,25 +28,29 @@ func NewSyscon(pName, sMode string) Syscon {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return Syscon{port: port, mode: sMode}
+	return syscon{port: port, mode: sMode}
 }
 
-func (sc Syscon) SendCommand(com string) {
+func (sc syscon) sendCommand(cmd string) {
 	switch sc.mode {
 	case "cxr":
 		fmt.Println("Not implemened")
 	case "cxrf":
-		n, err := sc.port.Write([]byte(com + "\r\n"))
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("Sent %v bytes\n", n)
+		sc.sendCXRFCommand(cmd)
 	case "sw":
 		fmt.Println("Not implemened")
 	}
 }
 
-func (sc Syscon) ReceiveCommand() string {
+func (sc syscon) sendCXRFCommand(cmd string) {
+	n, err := sc.port.Write([]byte(cmd + "\r\n"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Sent %v bytes\n", n)
+}
+
+func (sc syscon) receiveCommand() string {
 	buff := make([]byte, 1000)
 	for {
 		// Reads up to 100 bytes

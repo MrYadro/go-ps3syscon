@@ -6,19 +6,20 @@ import (
 	"crypto/cipher"
 	"encoding/hex"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
 var (
-	SC2TBKey, _      = hex.DecodeString("71F03F184C01C5EBC3F6A22A42BA9525") // https://www.psdevwiki.com/ps3/Keys
-	TB2SCKey, _      = hex.DecodeString("907E730F4D4E0A0B7B75F030EB1D9D36")
-	Auth1Response, _ = hex.DecodeString("3350BD7820345C29056A223BA220B323")
+	sc2TBKey, _      = hex.DecodeString("71F03F184C01C5EBC3F6A22A42BA9525") // https://www.psdevwiki.com/ps3/Keys
+	tb2SCKey, _      = hex.DecodeString("907E730F4D4E0A0B7B75F030EB1D9D36")
+	auth1Response, _ = hex.DecodeString("3350BD7820345C29056A223BA220B323")
 
-	Auth    = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-	Zero, _ = hex.DecodeString("00000000000000000000000000000000")
+	auth    = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+	zero, _ = hex.DecodeString("00000000000000000000000000000000")
 
-	Auth1ResponseHeader, _ = hex.DecodeString("10100000FFFFFFFF0000000000000000")
-	Auth2RequestHeader, _  = hex.DecodeString("10010000000000000000000000000000")
+	auth1ResponseHeader, _ = hex.DecodeString("10100000FFFFFFFF0000000000000000")
+	auth2RequestHeader, _  = hex.DecodeString("10010000000000000000000000000000")
 
 	scErrors = map[string]string{
 		"1":    "System error",
@@ -66,22 +67,67 @@ var (
 		"2133": "Thermal Sensor Error (IC3101)",
 		"2203": "SB Error (IC3001)",
 		"3":    "Fatal booting error",
+		"3000": "POWER FAIL",
+		"3001": "POWER FAIL",
+		"3002": "POWER FAIL",
 		"3003": "POWER FAIL",
+		"3004": "POWER FAIL",
+		"3010": "BE Error (IC1001)",
+		"3011": "BE Error (IC1001)",
+		"3012": "BE Error (IC1001)",
+		"3020": "BE Error (IC1001)",
+		"3030": "BE Error (IC1001)",
+		"3031": "BE Error (IC1001)",
+		"3032": "BE Error (IC1001)",
+		"3033": "BE Error (IC1001)",
+		"3034": "BE Error (IC1001)",
+		"3035": "BE-RSX Error (IC1001-IC2001)",
+		"3036": "BE-RSX Error (IC1001-IC2001)",
+		"3037": "BE-RSX Error (IC1001-IC2001)",
+		"3038": "BE-SB Error (IC1001-IC3001)",
+		"3039": "BE-SB Error (IC1001-IC3001)",
+		"3040": "Flash controller Error (IC3801)",
 		"4":    "Data error",
+		"4001": "BE Error (IC1001)",
+		"4002": "RSX Error (IC2001)",
+		"4003": "SB Error (IC3001)",
+		"4011": "BE Error (IC1001)",
+		"4101": "BE Error (IC1001)",
+		"4102": "RSX Error (IC2001)",
+		"4103": "SB Error (IC3001)",
+		"4111": "BE Error (IC1001)",
+		"4201": "BE Error (IC1001)",
+		"4202": "RSX Error (IC2001)",
+		"4203": "SB Error (IC3001)",
+		"4211": "BE Error (IC1001)",
+		"4212": "RSX Error (IC2001)",
+		"4221": "BE Error (IC1001)",
+		"4222": "RSX Error (IC2001)",
+		"4231": "BE Error (IC1001)",
+		"4261": "BE Error (IC1001)",
+		"4301": "BE Error (IC1001)",
+		"4302": "RSX Error (IC2001)",
+		"4303": "SB Error (IC3001)",
+		"4311": "BE Error (IC1001)",
+		"4312": "RSX Error (IC2001)",
+		"4321": "BE Error (IC1001)",
+		"4322": "RSX Error (IC2001)",
+		"4332": "RSX Error (IC2001)",
+		"4341": "BE Error (IC1001)",
+		"4401": "BE or RSX Error (IC1001 or IC2001)",
+		"4402": "BE or RSX Error (IC1001 or IC2001)",
+		"4403": "BE or SB Error (IC1001 or IC3001)",
+		"4411": "BE or RSX Error (IC1001 or IC2001)",
+		"4412": "BE or RSX Error (IC1001 or IC2001)",
+		"4421": "BE or RSX Error (IC1001 or IC2001)",
+		"4422": "BE or RSX Error (IC1001 or IC2001)",
+		"4432": "BE or RSX Error (IC1001 or IC2001)",
+		"4441": "BE or SB Error (IC1001 or IC3001)",
 	}
 )
 
-func IsVritualCommand(com string) bool {
-	switch c := com; {
-	case c == "auth",
-		strings.HasPrefix(c, "errinfo"):
-		return true
-	}
-	return false
-}
-
 func decode(ciphertext []byte) []byte {
-	block, err := aes.NewCipher(SC2TBKey)
+	block, err := aes.NewCipher(sc2TBKey)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +139,7 @@ func decode(ciphertext []byte) []byte {
 		panic("ciphertext is not a multiple of the block size")
 	}
 
-	mode := cipher.NewCBCDecrypter(block, Zero)
+	mode := cipher.NewCBCDecrypter(block, zero)
 
 	mode.CryptBlocks(ciphertext, ciphertext)
 
@@ -105,39 +151,39 @@ func encode(plaintext []byte) []byte {
 		panic("plaintext is not a multiple of the block size")
 	}
 
-	block, err := aes.NewCipher(TB2SCKey)
+	block, err := aes.NewCipher(tb2SCKey)
 	if err != nil {
 		panic(err)
 	}
 
 	ciphertext := make([]byte, len(plaintext))
 
-	mode := cipher.NewCBCEncrypter(block, Zero)
+	mode := cipher.NewCBCEncrypter(block, zero)
 	mode.CryptBlocks(ciphertext, plaintext)
 
 	return ciphertext
 }
 
-func (sc Syscon) VirtualCommandAuth() string {
-	res := sc.ProccessCommand("scopen")
+func (sc syscon) virtualCommandAuth() string {
+	res := sc.proccessCommand("scopen")
 	if res == "SC_READY" {
 		fmt.Printf("Successfully opened syscon\n%s\n", res)
-		res = sc.ProccessCommand(Auth)
+		res = sc.proccessCommand(auth)
 		if len(res) == 128 {
 			fmt.Println("Right response length")
 			resNew, _ := hex.DecodeString(res)
-			if bytes.Equal(resNew[0:0x10], Auth1ResponseHeader) {
+			if bytes.Equal(resNew[0:0x10], auth1ResponseHeader) {
 				fmt.Println("Right Auth1 response header")
 				data := decode(resNew[0x10:0x40])
-				if bytes.Equal(data[0x8:0x10], Zero[0x0:0x8]) && bytes.Equal(data[0x10:0x20], Auth1Response) && bytes.Equal(data[0x20:0x30], Zero) {
+				if bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) && bytes.Equal(data[0x10:0x20], auth1Response) && bytes.Equal(data[0x20:0x30], zero) {
 					fmt.Println("Right Auth1 response body")
 					newData := append(data[0x8:0x10], data[0x0:0x8]...)
-					newData = append(newData, Zero...)
-					newData = append(newData, Zero...)
-					Auth2Body := encode(newData)
-					authBody := append(Auth2RequestHeader, Auth2Body...)
+					newData = append(newData, zero...)
+					newData = append(newData, zero...)
+					auth2Body := encode(newData)
+					authBody := append(auth2RequestHeader, auth2Body...)
 					h := fmt.Sprintf("%02X", authBody)
-					res := sc.ProccessCommand(h)
+					res := sc.proccessCommand(h)
 					if strings.Contains(res, "SC_SUCCESS") {
 						return "Auth successful"
 					}
@@ -156,27 +202,32 @@ func (sc Syscon) VirtualCommandAuth() string {
 	return "Auth failed"
 }
 
-// 0xa0093003
-func ParseErrorCode(err string) string {
-	stepNo := err[4:6]
-	errCat := err[6:7]
-	errNo := err[6:10]
-	return fmt.Sprintf("%s on step %s with error info: %s", scErrors[errCat], stepNo, scErrors[errNo])
+func parseErrorCode(err string) string {
+	re := regexp.MustCompile(`0xa[A-Fa-f0-9]{3}[1-4][0-9][0-6f][0-9f]`)
+	valErr := re.MatchString(err)
+	if valErr {
+		stepNo := err[4:6]
+		errCat := err[6:7]
+		errNo := err[6:10]
+		return fmt.Sprintf("%s on step %s with error info: %s", scErrors[errCat], stepNo, scErrors[errNo])
+	} else {
+		return "Unknown error!"
+	}
 }
 
-func (sc Syscon) VirtualCommandErrinfo(com string) string {
+func (sc syscon) VirtualCommandErrinfo(com string) string {
 	errCode := strings.Split(com, " ")
 	if len(errCode) < 2 {
 		return "Please provide error code!"
 	} else {
-		return ParseErrorCode(errCode[1])
+		return parseErrorCode(errCode[1])
 	}
 }
 
-func (sc Syscon) ProccessVirtualCommand(com string) string {
+func (sc syscon) proccessVirtualCommand(com string) string {
 	switch c := com; {
 	case c == "auth":
-		return sc.VirtualCommandAuth()
+		return sc.virtualCommandAuth()
 	case strings.HasPrefix(c, "errinfo"):
 		return sc.VirtualCommandErrinfo(com)
 	}

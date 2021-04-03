@@ -5,21 +5,30 @@ import (
 	"time"
 )
 
-func GetRespTime(com string) time.Duration {
-	switch cmd := com; {
-	case cmd == "bringup":
+func getRespTime(cmd string) time.Duration {
+	switch com := cmd; {
+	case com == "bringup":
 		return 3
 	}
 	return 1
 }
 
-func (sc Syscon) ProccessCommand(com string) string {
+func isVritualCommand(com string) bool {
+	switch c := com; {
+	case c == "auth",
+		strings.HasPrefix(c, "errinfo"):
+		return true
+	}
+	return false
+}
+
+func (sc syscon) proccessCommand(com string) string {
 	com = strings.TrimSpace(com)
-	if IsVritualCommand(com) {
-		return sc.ProccessVirtualCommand(com)
+	if isVritualCommand(com) {
+		return sc.proccessVirtualCommand(com)
 	} else {
-		sc.SendCommand(com)
-		time.Sleep(GetRespTime(com) * time.Second)
-		return sc.ReceiveCommand()
+		sc.sendCommand(com)
+		time.Sleep(getRespTime(com) * time.Second)
+		return sc.receiveCommand()
 	}
 }

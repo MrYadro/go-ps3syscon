@@ -1,5 +1,7 @@
 # .github/workflows/release.yaml
 
+name: Publish Release
+
 on: 
   release:
     types: [created]

@@ -16,7 +16,7 @@ var (
 	SysconMode string
 )
 
-type Syscon struct {
+type syscon struct {
 	port serial.Port
 	mode string
 }
@@ -29,7 +29,7 @@ func init() {
 }
 
 func main() {
-	sc := NewSyscon(PortName, SysconMode)
+	sc := newSyscon(PortName, SysconMode)
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
@@ -38,7 +38,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		resp := sc.ProccessCommand(com)
+		resp := sc.proccessCommand(com)
 		fmt.Println(resp)
 	}
 }
