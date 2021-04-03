@@ -1,6 +1,6 @@
 # go-ps3syscon
 
-![example workflow](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml/badge.svg)
+![publish release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml/badge.svg) ![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon) ![downloads](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total) ![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)
 
 go-ps3syscon is golang implementation of syscon for PlayStation 3
 

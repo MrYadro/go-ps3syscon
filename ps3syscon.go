@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	PortName   string
-	SysconMode string
+	portName   string
+	sysconMode string
 )
 
 type syscon struct {
@@ -22,14 +22,14 @@ type syscon struct {
 }
 
 func init() {
-	flag.StringVar(&PortName, "port", "/dev/tty.SLAB_USBtoUART", "port to use")
-	flag.StringVar(&SysconMode, "mode", "CXRF", "syscon mode")
+	flag.StringVar(&portName, "port", "/dev/tty.SLAB_USBtoUART", "port to use")
+	flag.StringVar(&sysconMode, "mode", "CXRF", "syscon mode")
 	flag.Parse()
-	SysconMode = strings.ToLower(SysconMode)
+	sysconMode = strings.ToLower(sysconMode)
 }
 
 func main() {
-	sc := newSyscon(PortName, SysconMode)
+	sc := newSyscon(portName, sysconMode)
 
 	for {
 		reader := bufio.NewReader(os.Stdin)
