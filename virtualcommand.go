@@ -215,8 +215,8 @@ func parseErrorCode(err string) string {
 	}
 }
 
-func (sc syscon) VirtualCommandErrinfo(com string) string {
-	errCode := strings.Split(com, " ")
+func (sc syscon) VirtualCommandErrinfo(cmd string) string {
+	errCode := strings.Split(cmd, " ")
 	if len(errCode) < 2 {
 		return "Please provide error code!"
 	} else {
@@ -224,13 +224,12 @@ func (sc syscon) VirtualCommandErrinfo(com string) string {
 	}
 }
 
-func (sc syscon) proccessVirtualCommand(com string) string {
-	switch c := com; {
+func (sc syscon) proccessVirtualCommand(cmd string) string {
+	switch c := cmd; {
 	case c == "auth":
 		return sc.virtualCommandAuth()
 	case strings.HasPrefix(c, "errinfo"):
-		return sc.VirtualCommandErrinfo(com)
+		return sc.VirtualCommandErrinfo(cmd)
 	}
-
-	return com
+	return cmd
 }

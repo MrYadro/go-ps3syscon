@@ -34,11 +34,11 @@ func main() {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Print("> ")
-		com, err := reader.ReadString('\n')
+		cmd, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatal(err)
 		}
-		resp := sc.proccessCommand(com)
+		resp := sc.proccessCommand(cmd)
 		fmt.Println(resp)
 	}
 }
