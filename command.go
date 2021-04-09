@@ -5,12 +5,22 @@ import (
 	"time"
 )
 
-func getRespTime(cmd string) time.Duration {
-	switch com := cmd; {
-	case com == "bringup":
-		return 3
+func (sc syscon) getRespTime(cmd string) time.Duration {
+	// Make this proper
+	switch sc.mode {
+	case "cxr", "sw":
+		switch com := cmd; {
+		case com == "bringup":
+			return 12
+		}
+		return 5
+	default:
+		switch com := cmd; {
+		case com == "bringup":
+			return 3
+		}
+		return 1
 	}
-	return 1
 }
 
 func isVritualCommand(cmd string) bool {
@@ -28,7 +38,7 @@ func (sc syscon) proccessCommand(cmd string) string {
 		return sc.proccessVirtualCommand(cmd)
 	} else {
 		sc.sendCommand(cmd)
-		time.Sleep(getRespTime(cmd) * time.Second)
+		time.Sleep(sc.getRespTime(cmd) * time.Second)
 		return sc.receiveCommand()
 	}
 }
