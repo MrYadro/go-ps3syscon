@@ -21,6 +21,10 @@ type syscon struct {
 	mode string
 }
 
+type test struct {
+	mode string
+}
+
 func init() {
 	flag.StringVar(&portName, "port", "/dev/tty.SLAB_USBtoUART", "port to use")
 	flag.StringVar(&sysconMode, "mode", "CXRF", "syscon mode")
