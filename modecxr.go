@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func (sc syscon) sendCXRCommand(cmd string) {
@@ -14,8 +17,7 @@ func (sc syscon) sendCXRCommand(cmd string) {
 	for i := 0; i < length; i += maxSize {
 		j += maxSize
 		if j > length {
-			// j = length
-			break // And don'r send extra
+			j = length
 		}
 		fmt.Println(fcmd[i:j])
 		sc.writeCommand(fcmd[i:j])
@@ -23,41 +25,43 @@ func (sc syscon) sendCXRCommand(cmd string) {
 	sc.writeCommand("\r\n")
 }
 
-func (sc syscon) receiveCXRCommand() string {
-	// buff := make([]byte, 1000)
-	// n, err := sc.port.Read(buff)
-	// fmt.Printf("Read %v bytes\n", n)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println(string(buff[:n]))
-
-	// // test := strings.SplitAfterN(string(buff[:n]), "\n", 2)
-	// reg, err := regexp.Compile("[^a-zA-Z0-9:]+")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// processedString := reg.ReplaceAllString(string(buff[:n]), "")
-	// fmt.Println(processedString)
-	// return processedString
+func (sc syscon) receiveCXRCommand() (string, error) {
 	buff := make([]byte, 1000)
-	for {
-		n, err := sc.port.Read(buff)
-		fmt.Printf("Read %v bytes\n", n)
-		if err != nil {
-			log.Fatal(err)
-		}
-		if n == 0 {
-			fmt.Println("\nEOF")
-			break
-		}
-
-		// if strings.Contains(string(buff[:n]), "\r\n") {
-		// 	test := strings.SplitAfterN(string(buff[:n]), "\n", 2)
-		fmt.Println(string(buff[:n]))
-		// 	return strings.TrimSpace(test[1])
-		// }
+	n, err := sc.port.Read(buff)
+	fmt.Printf("Read %v bytes\n", n)
+	if err != nil {
+		log.Fatal(err)
 	}
-	return ""
+	fmt.Println(string(buff[:n]))
+	respRaw := strings.TrimSpace(string(buff[:n]))
+	resp := strings.Split(respRaw, ":")
+	if len(resp) != 3 {
+		fmt.Println("wrong response length")
+		return "", errors.New("wrong response length")
+	}
+	if resp[0] != "R" && resp[0] != "E" {
+		fmt.Println("magic?")
+		return "", errors.New("magic?")
+	}
+	if resp[1] != fmt.Sprintf("%02X", countChecksum(resp[2])) {
+		fmt.Println("wrong checksum")
+		return "", errors.New("wrong chechsum")
+	}
+	respData := strings.Split(resp[2], " ")
+	if resp[0] == "R" && len(respData) < 2 || resp[0] == "E" && len(respData) != 2 {
+		fmt.Println("wrong data length")
+		return "", errors.New("wrong data length")
+	}
+	if respData[0] != "OK" || len(respData) < 2 {
+		respCode, err := strconv.Atoi(respData[1])
+		if err == nil && respCode == 0 {
+			return respData[2], nil
+		}
+		return "", errors.New("wrong response code")
+	}
+	respCode, err := strconv.Atoi(respData[1])
+	if err == nil && respCode == 0 {
+		return respData[2], nil
+	}
+	return "", errors.New("wrong response code")
 }

@@ -167,16 +167,16 @@ func encode(plaintext []byte) []byte {
 func (sc syscon) virtualCommandAuth() string {
 	switch sc.mode {
 	case "cxrf":
-		res := sc.proccessCommand("scopen")
-		if res == "SC_READY" {
+		res, err := sc.proccessCommand("scopen")
+		if err == nil && res == "SC_READY" {
 			fmt.Printf("Successfully opened syscon\n%s\n", res)
-			res = sc.proccessCommand(auth)
-			if len(res) == 128 {
+			res, err = sc.proccessCommand(auth)
+			if err == nil && len(res) == 128 {
 				fmt.Println("Right response length")
-				resNew, _ := hex.DecodeString(res)
-				if bytes.Equal(resNew[0:0x10], auth1ResponseHeader) {
+				resHex, _ := hex.DecodeString(res)
+				if bytes.Equal(resHex[0:0x10], auth1ResponseHeader) {
 					fmt.Println("Right Auth1 response header")
-					data := decode(resNew[0x10:0x40])
+					data := decode(resHex[0x10:0x40])
 					if bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) && bytes.Equal(data[0x10:0x20], auth1Response) && bytes.Equal(data[0x20:0x30], zero) {
 						fmt.Println("Right Auth1 response body")
 						newData := append(data[0x8:0x10], data[0x0:0x8]...)
@@ -185,8 +185,8 @@ func (sc syscon) virtualCommandAuth() string {
 						auth2Body := encode(newData)
 						authBody := append(auth2RequestHeader, auth2Body...)
 						com := fmt.Sprintf("%02X", authBody)
-						res := sc.proccessCommand(com)
-						if strings.Contains(res, "SC_SUCCESS") {
+						res, err := sc.proccessCommand(com)
+						if err == nil && strings.Contains(res, "SC_SUCCESS") {
 							return "Auth successful"
 						}
 					} else {
@@ -202,30 +202,29 @@ func (sc syscon) virtualCommandAuth() string {
 			fmt.Println("Error opening syscon")
 		}
 	default:
-		res := sc.proccessCommand("AUTH1 " + auth)
-		if res[0] == 0 {
-			resNew, _ := hex.DecodeString(res)
-			if bytes.Equal(resNew[0:0x10], auth1ResponseHeader) {
-				data := decode(resNew[0x10:0x40])
-				if bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) && bytes.Equal(data[0x10:0x20], auth1Response) && bytes.Equal(data[0x20:0x30], zero) {
-					newData := append(data[0x8:0x10], data[0x0:0x8]...)
-					newData = append(newData, zero...)
-					newData = append(newData, zero...)
-					auth2Body := encode(newData)
-					authBody := append(auth2RequestHeader, auth2Body...)
-					com := fmt.Sprintf("%02X", authBody)
-					res := sc.proccessCommand(com)
-					if res[0] == 0 {
-						fmt.Println("Auth successful")
-					}
-				} else {
-					fmt.Println("Wrong Auth1 response body")
+		res, err := sc.proccessCommand("AUTH1 " + auth)
+		resHex, _ := hex.DecodeString(res)
+		if err == nil && bytes.Equal(resHex[0:0x10], auth1ResponseHeader) {
+			fmt.Println("Right Auth1 response header")
+			data := decode(resHex[0x10:0x40])
+			if bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) && bytes.Equal(data[0x10:0x20], auth1Response) && bytes.Equal(data[0x20:0x30], zero) {
+				fmt.Println("Right Auth1 response body")
+				newData := append(data[0x8:0x10], data[0x0:0x8]...)
+				newData = append(newData, zero...)
+				newData = append(newData, zero...)
+				auth2Body := encode(newData)
+				authBody := append(auth2RequestHeader, auth2Body...)
+				com := fmt.Sprintf("AUTH2 %02X", authBody)
+				res, err := sc.proccessCommand(com)
+				fmt.Println(res)
+				if err == nil {
+					return "Auth successful"
 				}
 			} else {
-				fmt.Println("Wrong Auth1 response header")
+				fmt.Println("Wrong Auth1 response body")
 			}
 		} else {
-			return "Auth1 response invalid"
+			fmt.Println("Wrong Auth1 response header")
 		}
 	}
 	return "Auth failed"

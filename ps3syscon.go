@@ -21,12 +21,8 @@ type syscon struct {
 	mode string
 }
 
-type test struct {
-	mode string
-}
-
 func init() {
-	flag.StringVar(&portName, "port", "/dev/tty.SLAB_USBtoUART", "port to use")
+	flag.StringVar(&portName, "port", "/dev/tty.usbserial-145410", "port to use")
 	flag.StringVar(&sysconMode, "mode", "CXRF", "syscon mode")
 	flag.Parse()
 	sysconMode = strings.ToLower(sysconMode)
@@ -42,7 +38,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		resp := sc.proccessCommand(cmd)
+		resp, err := sc.proccessCommand(cmd)
+		if err != nil {
+			log.Print(err)
+		}
 		fmt.Println(resp)
 	}
 }

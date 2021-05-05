@@ -32,10 +32,10 @@ func isVritualCommand(cmd string) bool {
 	return false
 }
 
-func (sc syscon) proccessCommand(cmd string) string {
+func (sc syscon) proccessCommand(cmd string) (string, error) {
 	cmd = strings.TrimSpace(cmd)
 	if isVritualCommand(cmd) {
-		return sc.proccessVirtualCommand(cmd)
+		return sc.proccessVirtualCommand(cmd), nil // TODO: Error handling
 	} else {
 		sc.sendCommand(cmd)
 		time.Sleep(sc.getRespTime(cmd) * time.Second)

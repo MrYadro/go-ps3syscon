@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func (sc syscon) sendSWCommand(cmd string) {
 	// SendCmdLong ??????
@@ -9,6 +12,6 @@ func (sc syscon) sendSWCommand(cmd string) {
 	sc.writeCommand(fcmd)
 }
 
-func (sc syscon) receiveSWCommand() string {
-	return "not impl"
+func (sc syscon) receiveSWCommand() (string, error) {
+	return "not impl", errors.New("not impl")
 }

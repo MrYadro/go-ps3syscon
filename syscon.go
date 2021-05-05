@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
@@ -21,7 +22,6 @@ func newSyscon(pName, sMode string) syscon {
 			mode = &serial.Mode{
 				BaudRate: 57600,
 			}
-			fmt.Println(mode)
 		}
 	}
 	port, err := serial.Open(pName, mode)
@@ -50,7 +50,7 @@ func (sc syscon) writeCommand(cmd string) {
 	fmt.Printf("Sent %v bytes\n", n)
 }
 
-func (sc syscon) receiveCommand() string {
+func (sc syscon) receiveCommand() (string, error) {
 	switch sc.mode {
 	case "cxr":
 		return sc.receiveCXRCommand()
@@ -59,5 +59,5 @@ func (sc syscon) receiveCommand() string {
 	case "sw":
 		return sc.receiveSWCommand()
 	}
-	return "wrong mode"
+	return "wrong mode", errors.New("wrong mode")
 }
