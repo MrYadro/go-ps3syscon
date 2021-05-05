@@ -6,7 +6,7 @@ go-ps3syscon is golang implementation of syscon for PlayStation 3
 
 You can provide `-port` and `-mode` params when running binary
 
-`-mode` for now supports only `cxrf` mode
+`-mode` for now supports only `cxrf` and `cxr` mode
 
 List of virtual commands to use:
 * `auth` - authorises to use other commands
