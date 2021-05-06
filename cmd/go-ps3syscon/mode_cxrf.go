@@ -9,6 +9,83 @@ import (
 	"strings"
 )
 
+var (
+	intCmd = map[string]map[string]string{
+		"becount": {
+			"description": "Display bringup/shutdown count + Power-on time",
+		},
+		"bepgoff": {
+			"description": "BE power grid off",
+		},
+		"bepkt": {
+			"subcommands": "show,set,unset,mode,debug,help",
+			"description": "Packet permissions",
+		},
+		"bestat": {
+			"description": "Get status of BE",
+		},
+		"boardconfig": {
+			"description": "Displays board configuration",
+		},
+		"bootbeep": {
+			"subcommands": "stat,on,off",
+			"description": "Boot beep",
+		},
+		"bringup": {
+			"description": "Turn PS3 on",
+		},
+		"bsn": {
+			"description": "Get board serial number",
+		},
+		"bstatus": {
+			"description": "HDMI related status",
+		},
+		"buzz": {
+			"description": "Activate buzzer",
+			"parametres":  "freq",
+		},
+		"buzzpattern": {
+			"description": "Buzzer pattern",
+			"parametres":  "freq,pattern,count",
+		},
+		"clear_err": {
+			"subcommands": "last,eeprom,all",
+			"description": "Clear errors",
+		},
+		"clearerrlog": {
+			"description": "Clears error log",
+		},
+		"comm": {
+			"description": "Communication mode",
+		},
+		"commt": {
+			"subcommands": "help,start,stop,send",
+			"description": "Manual BE communication",
+		},
+		"cp": {
+			"subcommands": "ready,busy,reset,beepremote,beep2kn1n3,beep2kn2n3",
+			"description": "CP control commands",
+		},
+		"csum": {
+			"description": "Firmware checksum",
+		},
+		"devpm": {
+			"subcommands": "ata,pci,pciex,rsx",
+			"description": "Device power management",
+		},
+		"diag": {
+			"description": "Diag (execute without paramto show help)",
+		},
+		"disp_err": {
+			"description": "Displays errors",
+		},
+		"duty": {
+			"subcommands": "get,set,getmin,setmin,getmax,setmax,getinmin,setinmin,getinmax,setinmax",
+			"description": "Fan policy",
+		},
+	}
+)
+
 func (sc syscon) sendCXRFCommand(cmd string) {
 	sc.writeCommand(cmd + "\r\n")
 }

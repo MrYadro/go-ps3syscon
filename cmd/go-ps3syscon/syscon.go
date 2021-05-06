@@ -4,12 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strings"
 
 	"go.bug.st/serial"
 )
 
-func newSyscon(pName, sMode string) syscon {
+func newSyscon(pName, sMode string, noVer bool) syscon {
 	var mode *serial.Mode
 	switch sMode {
 	case "cxrf":
@@ -29,13 +28,13 @@ func newSyscon(pName, sMode string) syscon {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return syscon{port: port, mode: sMode}
+	return syscon{port: port, mode: sMode, noVerify: noVer}
 }
 
 func (sc syscon) sendCommand(cmd string) {
 	switch sc.mode {
 	case "cxr":
-		sc.sendCXRCommand(strings.ToUpper(cmd))
+		sc.sendCXRCommand(cmd)
 	case "cxrf":
 		sc.sendCXRFCommand(cmd)
 	case "sw":
