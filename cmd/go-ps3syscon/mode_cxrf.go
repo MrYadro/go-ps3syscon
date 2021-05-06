@@ -287,6 +287,93 @@ var (
 		"stoplogerrtsk": {
 			"description": "Stop error log task",
 		},
+		"syspowdown": {
+			"description": "System power down",
+			"parametres":  "param,param,param",
+		},
+		"task": {
+			"description": "Print tasks",
+		},
+		"thalttest": {
+			"description": "Does nothing",
+		},
+		"thermfatalmode": {
+			"subcommands": "canboot,cannotboot",
+			"description": "Set thermal boot mode",
+		},
+		"therrclr": {
+			"description": "Thermal register clear",
+		},
+		"thrm": {
+			"description": "Does nothing",
+		},
+		"tmp": {
+			"description": "Get temperature",
+			"parametres":  "zone",
+		},
+		"trace": {
+			"description": "Trace tasks (use help)",
+		},
+		"trp": {
+			"subcommands": "get,set,getini,setini",
+			"description": "Temperature zones",
+		},
+		"tsensor": {
+			"description": "Get raw temperature",
+			"parametres":  "sensor",
+		},
+		"tshutdown": {
+			"subcommands": "get,set,getini,setini",
+			"description": "Thermal shutdown",
+		},
+		"tshutdowntime": {
+			"description": "Thermal shutdown time",
+			"parametres":  "time",
+		},
+		"tzone": {
+			"description": "Show thermal zones",
+		},
+		"version": {
+			"description": "SC firmware version",
+		},
+		"w": {
+			"description": "Write byte to SC",
+			"parametres":  "offset,value",
+		},
+		"w16": {
+			"description": "Write word to SC",
+			"parametres":  "offset,value",
+		},
+		"w32": {
+			"description": "Write bword to SC",
+			"parametres":  "offset,value",
+		},
+		"w64": {
+			"description": "Write qword to SC",
+			"parametres":  "offset,value",
+		},
+		"wbe": {
+			"description": "Write to BE",
+			"parametres":  "offset,value",
+		},
+		"wmmto": {
+			"subcommands": "get",
+			"description": "Get watchdog timeout",
+		},
+		"wrsxc": {
+			"description": "Write to RSX",
+			"parametres":  "offset,value",
+		},
+		"xdrdiag": {
+			"subcommands": "start,info,result",
+			"description": "XDR diag",
+		},
+		"xiodiag": {
+			"description": "XIO diag",
+		},
+		"xrcv": {
+			"description": "Xmodem receive",
+		},
 	}
 )
 
