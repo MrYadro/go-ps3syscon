@@ -3,127 +3,12 @@ package main
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"encoding/hex"
 	"fmt"
 	"regexp"
 	"strings"
 )
 
-var (
-	sc2TBKey, _      = hex.DecodeString("71F03F184C01C5EBC3F6A22A42BA9525") // https://www.psdevwiki.com/ps3/Keys
-	tb2SCKey, _      = hex.DecodeString("907E730F4D4E0A0B7B75F030EB1D9D36")
-	auth1Response, _ = hex.DecodeString("3350BD7820345C29056A223BA220B323")
-
-	auth    = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-	zero, _ = hex.DecodeString("00000000000000000000000000000000")
-
-	auth1ResponseHeader, _ = hex.DecodeString("10100000FFFFFFFF0000000000000000")
-	auth2RequestHeader, _  = hex.DecodeString("10010000000000000000000000000000")
-
-	scErrors = map[string]string{
-		"1":    "System error",
-		"1001": "BE VRAM Power Fail",
-		"1002": "RSX VRAM Power Fail",
-		"1004": "AC/DC Power Fail",
-		"1103": "Thermal Error",
-		"1200": "BE Thermal Error",
-		"1201": "RSX Thermal Error",
-		"1203": "BE VR Thermal Error",
-		"1204": "SB Thermal Error",
-		"1205": "EE+GS Thermal Error",
-		"1301": "BE PLL Unlick",
-		"14FF": "Check Stop",
-		"1601": "BE Livelock Detection",
-		"1701": "BE Attention",
-		"1802": "RSX INIT",
-		"1900": "RTC Error (voltage drop)",
-		"1901": "RTC Error (oscillation stop)",
-		"1902": "RTC Error (Access Error)",
-		"2":    "Fatal error",
-		"2001": "BE Error (IC1001)",
-		"2002": "RSX Error (IC2001)",
-		"2003": "SB Error (IC3001)",
-		"2010": "Clock Generator Error (IC5001)",
-		"2011": "Clock Generator Error (IC5003)",
-		"2012": "Clock Generator Error (IC5002)",
-		"2013": "Clock Generator Error (IC5004)",
-		"2020": "HDMI Error (IC2502)",
-		"2022": "DVE Error (IC2406)",
-		"2030": "Thermal Sensor Error (IC1101)",
-		"2031": "Thermal Sensor Error (IC2101)",
-		"2033": "Thermal Sensor Error (IC3101)",
-		"2101": "BE Error (IC1001)",
-		"2102": "RSX Error (IC2001)",
-		"2103": "SB Error (IC3001",
-		"2110": "Clock Generator Error (IC5001)",
-		"2111": "Clock Generator Error (IC5003)",
-		"2112": "Clock Generator Error (IC5002)",
-		"2113": "Clock Generator Error (IC5004)",
-		"2120": "HDMI Error (IC2502)",
-		"2122": "DVE Error (IC2406)",
-		"2130": "Thermal Sensor Error (IC1101)",
-		"2131": "Thermal Sensor Error (IC2101)",
-		"2133": "Thermal Sensor Error (IC3101)",
-		"2203": "SB Error (IC3001)",
-		"3":    "Fatal booting error",
-		"3000": "POWER FAIL",
-		"3001": "POWER FAIL",
-		"3002": "POWER FAIL",
-		"3003": "POWER FAIL",
-		"3004": "POWER FAIL",
-		"3010": "BE Error (IC1001)",
-		"3011": "BE Error (IC1001)",
-		"3012": "BE Error (IC1001)",
-		"3020": "BE Error (IC1001)",
-		"3030": "BE Error (IC1001)",
-		"3031": "BE Error (IC1001)",
-		"3032": "BE Error (IC1001)",
-		"3033": "BE Error (IC1001)",
-		"3034": "BE Error (IC1001)",
-		"3035": "BE-RSX Error (IC1001-IC2001)",
-		"3036": "BE-RSX Error (IC1001-IC2001)",
-		"3037": "BE-RSX Error (IC1001-IC2001)",
-		"3038": "BE-SB Error (IC1001-IC3001)",
-		"3039": "BE-SB Error (IC1001-IC3001)",
-		"3040": "Flash controller Error (IC3801)",
-		"4":    "Data error",
-		"4001": "BE Error (IC1001)",
-		"4002": "RSX Error (IC2001)",
-		"4003": "SB Error (IC3001)",
-		"4011": "BE Error (IC1001)",
-		"4101": "BE Error (IC1001)",
-		"4102": "RSX Error (IC2001)",
-		"4103": "SB Error (IC3001)",
-		"4111": "BE Error (IC1001)",
-		"4201": "BE Error (IC1001)",
-		"4202": "RSX Error (IC2001)",
-		"4203": "SB Error (IC3001)",
-		"4211": "BE Error (IC1001)",
-		"4212": "RSX Error (IC2001)",
-		"4221": "BE Error (IC1001)",
-		"4222": "RSX Error (IC2001)",
-		"4231": "BE Error (IC1001)",
-		"4261": "BE Error (IC1001)",
-		"4301": "BE Error (IC1001)",
-		"4302": "RSX Error (IC2001)",
-		"4303": "SB Error (IC3001)",
-		"4311": "BE Error (IC1001)",
-		"4312": "RSX Error (IC2001)",
-		"4321": "BE Error (IC1001)",
-		"4322": "RSX Error (IC2001)",
-		"4332": "RSX Error (IC2001)",
-		"4341": "BE Error (IC1001)",
-		"4401": "BE or RSX Error (IC1001 or IC2001)",
-		"4402": "BE or RSX Error (IC1001 or IC2001)",
-		"4403": "BE or SB Error (IC1001 or IC3001)",
-		"4411": "BE or RSX Error (IC1001 or IC2001)",
-		"4412": "BE or RSX Error (IC1001 or IC2001)",
-		"4421": "BE or RSX Error (IC1001 or IC2001)",
-		"4422": "BE or RSX Error (IC1001 or IC2001)",
-		"4432": "BE or RSX Error (IC1001 or IC2001)",
-		"4441": "BE or SB Error (IC1001 or IC3001)",
-	}
-)
+var ()
 
 func decode(ciphertext []byte) []byte {
 	block, err := aes.NewCipher(sc2TBKey)

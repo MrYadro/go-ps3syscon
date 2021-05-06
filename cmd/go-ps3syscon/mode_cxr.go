@@ -10,66 +10,6 @@ import (
 	"strings"
 )
 
-var (
-	extCmd = map[string]map[string]string{
-		"BOOT": {
-			"subcommands": "TEST,CONT",
-			"description": "",
-		},
-		"SHUTDOWN":   {},
-		"HALT":       {},
-		"BOOTENABLE": {},
-		"AUTH1":      {},
-		"AUTH2":      {},
-		"AUTHVER": {
-			"subcommands": "SET,GET",
-		},
-		"EEP": {
-			"subcommands": "INIT,SET,GET",
-		},
-		"PDAREA": {
-			"subcommands": "SET,GET",
-		},
-		"CSAREA": {
-			"subcommands": "SET,GET",
-		},
-		"VID": {
-			"subcommands": "GET",
-		},
-		"CID": {
-			"subcommands": "GET",
-		},
-		"ECID": {
-			"subcommands": "GET",
-		},
-		"REV": {
-			"subcommands": "SB",
-		},
-		"SPU": {
-			"subcommands": "INFO",
-		},
-		"KSV": {},
-		"FAN": {
-			"subcommands": "SETPOLICY,GETPOLICY,START,STOP,SETDUTY,GETDUTY",
-		},
-		"R8":       {},
-		"W8":       {},
-		"R16":      {},
-		"W16":      {},
-		"R32":      {},
-		"W32":      {},
-		"RBE":      {},
-		"WBE":      {},
-		"PORTSTAT": {},
-		"VER":      {},
-		"BUZ":      {},
-		"SERVFAN":  {},
-		"ERRLOG": {
-			"subcommands": "START,STOP,GET,CLEAR",
-		},
-	}
-)
-
 func (sc syscon) sendCXRCommand(cmd string) {
 	checksum := countChecksum(cmd)
 	fcmd := fmt.Sprintf("C:%02X:%s", checksum, cmd)
