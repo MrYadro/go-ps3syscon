@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 
 	"go.bug.st/serial"
 )
@@ -34,7 +35,7 @@ func newSyscon(pName, sMode string) syscon {
 func (sc syscon) sendCommand(cmd string) {
 	switch sc.mode {
 	case "cxr":
-		sc.sendCXRCommand(cmd)
+		sc.sendCXRCommand(strings.ToUpper(cmd))
 	case "cxrf":
 		sc.sendCXRFCommand(cmd)
 	case "sw":
