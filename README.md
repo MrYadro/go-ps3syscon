@@ -1,6 +1,6 @@
 # go-ps3syscon
 
-[![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
+[![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![releases](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total)](https://github.com/MrYadro/go-ps3syscon/releases) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
 
 go-ps3syscon is golang implementation of syscon for PlayStation 3
 
