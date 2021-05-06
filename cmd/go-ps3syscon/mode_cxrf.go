@@ -83,6 +83,70 @@ var (
 			"subcommands": "get,set,getmin,setmin,getmax,setmax,getinmin,setinmin,getinmax,setinmax",
 			"description": "Fan policy",
 		},
+		"dve": {
+			"subcommands": "help,set,save,show",
+			"description": "DVE chip parameters",
+		},
+		"eepcsum": {
+			"description": "Shows eeprom checksum",
+		},
+		"eepromcheck": {
+			"description": "Check eeprom",
+			"parametres":  "id",
+		},
+		"eeprominit": {
+			"description": "Init eeprom",
+			"parametres":  "id",
+		},
+		"ejectsw": {
+			"description": "Eject switch",
+		},
+		"errlog": {
+			"description": "Gets the error log",
+		},
+		"fancon": {
+			"description": "Does nothing",
+		},
+		"fanconautotype": {
+			"description": "Does nothing",
+		},
+		"fanconmode": {
+			"subcommands": "get",
+			"description": "Fan control mode",
+		},
+		"fanconpolicy": {
+			"subcommands": "get,set,getini,setini",
+			"description": "Fan control policy",
+		},
+		"fandiag": {
+			"description": "Fan test",
+		},
+		"faninictrl": {
+			"description": "Does nothing",
+		},
+		"fanpol": {
+			"description": "Does nothing",
+		},
+		"fanservo": {
+			"description": "Does nothing",
+		},
+		"fantbl": {
+			"subcommands": "get,set,getini,setini,gettable,settable",
+			"description": "Fan table",
+		},
+		"firmud": {
+			"description": "Firmware update",
+		},
+		"geterrlog": {
+			"description": "Gets error log",
+			"parametres":  "id",
+		},
+		"getrtc": {
+			"description": "Gets rtc",
+		},
+		"halt": {
+			"description": "Halts syscon",
+		},
 	}
 )
 
