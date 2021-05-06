@@ -7,14 +7,10 @@ import (
 )
 
 func (sc syscon) getRespTime(cmd string) time.Duration {
-	// Make this proper
+	//TODO: Make this proper
 	switch sc.mode {
 	case "cxr", "sw":
-		switch com := cmd; {
-		case com == "bringup":
-			return 12
-		}
-		return 5
+		return 2
 	default:
 		switch com := cmd; {
 		case com == "bringup":
@@ -27,7 +23,7 @@ func (sc syscon) getRespTime(cmd string) time.Duration {
 func isVritualCommand(cmd string) bool {
 	switch c := cmd; {
 	case c == "auth",
-		strings.HasPrefix(c, "errinfo"):
+		strings.HasPrefix(c, "errinfo"), strings.HasPrefix(c, "cmdinfo"):
 		return true
 	}
 	return false
@@ -38,10 +34,6 @@ func (sc syscon) valCmd(cmd string) error {
 		return nil
 	}
 	command := strings.Split(cmd, " ")
-	cmdList := extCmd
-	if sc.mode == "cxrf" {
-		cmdList = intCmd
-	}
 
 	cm, ok := cmdList[command[0]]
 	if ok {

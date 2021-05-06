@@ -8,6 +8,10 @@ import (
 	"go.bug.st/serial"
 )
 
+var (
+	cmdList map[string]map[string]string
+)
+
 func newSyscon(pName, sMode string, noVer bool) syscon {
 	var mode *serial.Mode
 	switch sMode {
@@ -16,12 +20,14 @@ func newSyscon(pName, sMode string, noVer bool) syscon {
 			mode = &serial.Mode{
 				BaudRate: 115200,
 			}
+			cmdList = intCmd
 		}
 	case "cxr", "sw":
 		{
 			mode = &serial.Mode{
 				BaudRate: 57600,
 			}
+			cmdList = extCmd
 		}
 	}
 	port, err := serial.Open(pName, mode)
