@@ -147,6 +147,146 @@ var (
 		"halt": {
 			"description": "Halts syscon",
 		},
+		"hdmi": {
+			"description": "HDMI (various commands, use help)",
+		},
+		"hdmiid": {
+			"description": "Get HDMI id's",
+		},
+		"hdmiid2": {
+			"description": "Get HDMI id's",
+		},
+		"hversion": {
+			"description": "Platform ID",
+		},
+		"hyst": {
+			"subcommands": "get,set,getini,setini",
+			"description": "Temperature zones",
+		},
+		"lasterrlog": {
+			"description": "Last error from log",
+		},
+		"ledmode": {
+			"description": "Get led mode",
+			"parametres":  "id,id",
+		},
+		"LS": {
+			"description": "LabStation Mode",
+		},
+		"ltstest": {
+			"subcommands": "get,set",
+			"description": "?Temp related? values",
+		},
+		"osbo": {
+			"description": "Sets 0x2000F60",
+		},
+		"patchcsum": {
+			"description": "Patch checksum",
+		},
+		"patchvereep": {
+			"description": "Patch version eeprom",
+		},
+		"patchverram": {
+			"description": "Patch version ram",
+		},
+		"poll": {
+			"description": "Poll log",
+		},
+		"portscan": {
+			"description": "Scan port",
+			"parametres":  "port",
+		},
+		"powbtnmode": {
+			"description": "Power button mode",
+			"parametres":  "mode",
+		},
+		"powerstate": {
+			"description": "Get power state",
+		},
+		"powersw": {
+			"description": "Power switch",
+		},
+		"powupcause": {
+			"description": "Power up cause",
+		},
+		"printmode": {
+			"description": "Set printmode",
+			"parametres":  "mode",
+		},
+		"printpatch": {
+			"description": "Prints patch",
+		},
+		"r": {
+			"description": "Read byte from SC",
+			"parametres":  "offset,length",
+		},
+		"r16": {
+			"description": "Read word from SC",
+			"parametres":  "offset,length",
+		},
+		"r32": {
+			"description": "Read dword from SC",
+			"parametres":  "offset,length",
+		},
+		"r64": {
+			"description": "Read qword from SC",
+			"parametres":  "offset,length",
+		},
+		"r64d": {
+			"description": "Read qword data from SC",
+			"parametres":  "offset,length",
+		},
+		"rbe": {
+			"description": "Read from BE",
+			"parametres":  "offset",
+		},
+		"recv": {
+			"description": "Receive something",
+		},
+		"resetsw": {
+			"description": "Reset switch",
+		},
+		"restartlogerrtoeep": {
+			"description": "Reenable error logging to eeprom",
+		},
+		"revision": {
+			"description": "Get softid",
+		},
+		"rrsxc": {
+			"description": "Read from RSX",
+			"parametres":  "offset,length",
+		},
+		"rtcreset": {
+			"description": "Reset RTC",
+		},
+		"scagv2": {
+			"description": "Auth related?",
+		},
+		"scasv2": {
+			"description": "Auth related?",
+		},
+		"scclose": {
+			"description": "Close syscon",
+		},
+		"scopen": {
+			"description": "Open syscon",
+		},
+		"send": {
+			"description": "Send something",
+			"parametres":  "variable",
+		},
+		"shutdown": {
+			"description": "PS3 shutdown",
+		},
+		"startlogerrtsk": {
+			"description": "Start error log task",
+		},
+		"stoplogerrtoeep": {
+			"description": "Stop error logging to eeprom",
+		},
+		"stoplogerrtsk": {
+			"description": "Stop error log task",
+		},
 	}
 )
 
