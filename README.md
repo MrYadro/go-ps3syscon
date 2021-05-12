@@ -2,7 +2,7 @@
 
 [![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yaml) [![Build](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yaml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yaml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yaml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql-analysis.yaml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![releases](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total)](https://github.com/MrYadro/go-ps3syscon/releases) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
 
-go-ps3syscon is golang implementation of syscon for PlayStation 3
+Golang implementation of syscon for PlayStation 3
 
 You can provide `-port`, `-mode` and `-noverify`  params when running binary
 
