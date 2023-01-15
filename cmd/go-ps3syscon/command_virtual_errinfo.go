@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-func (sc syscon) VirtualCommandErrinfo(cmd string) string {
+func (sc syscon) virtualCommandErrinfo(cmd string) string {
 	if len(cmd) == 0 {
 		return "Please provide error code!"
 	} else {

@@ -87,12 +87,14 @@ func main() {
 			goto exit
 		case line == "help":
 			usage(l.Stderr())
+		case strings.HasPrefix(line, "auth"):
+			fmt.Println(sc.virtualCommandAuth())
 		case strings.HasPrefix(line, "errinfo"):
 			line := strings.TrimSpace(line[7:])
-			fmt.Println(sc.VirtualCommandErrinfo(line))
+			fmt.Println(sc.virtualCommandErrinfo(line))
 		case strings.HasPrefix(line, "cmdinfo"):
 			line := strings.TrimSpace(line[7:])
-			fmt.Println(sc.VirtualCommandCmdinfo(line))
+			fmt.Println(sc.virtualCommandCmdinfo(line))
 		case line == "":
 		default:
 			resp, err := sc.proccessCommand(line)
