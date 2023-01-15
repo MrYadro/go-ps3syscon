@@ -1,4 +1,4 @@
-# go-ps3syscon Golang implementation of syscon for PlayStation 3
+# go-ps3syscon Syscon for PlayStation 3
 
 [![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml) [![Build](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![releases](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total)](https://github.com/MrYadro/go-ps3syscon/releases) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
 
@@ -26,4 +26,5 @@ List of virtual commands to use:
 ## Links
 
 A PS3 Story: The Yellow Light Of Death: https://www.youtube.com/watch?v=I0UMG3iVYZI
+
 Mostly based on: https://github.com/db260179/ps3syscon
