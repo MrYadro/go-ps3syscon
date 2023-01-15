@@ -1,17 +1,14 @@
 package main
 
-import "encoding/hex"
-
 var (
-	sc2TBKey, _      = hex.DecodeString("71F03F184C01C5EBC3F6A22A42BA9525") // https://www.psdevwiki.com/ps3/Keys
-	tb2SCKey, _      = hex.DecodeString("907E730F4D4E0A0B7B75F030EB1D9D36")
-	auth1Response, _ = hex.DecodeString("3350BD7820345C29056A223BA220B323")
-
-	auth    = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-	zero, _ = hex.DecodeString("00000000000000000000000000000000")
-
-	auth1ResponseHeader, _ = hex.DecodeString("10100000FFFFFFFF0000000000000000")
-	auth2RequestHeader, _  = hex.DecodeString("10010000000000000000000000000000")
+	// https://www.psdevwiki.com/ps3/Keys
+	sc2TBKey            = []byte{113, 240, 63, 24, 76, 1, 197, 235, 195, 246, 162, 42, 66, 186, 149, 37} // 71F03F184C01C5EBC3F6A22A42BA9525
+	tb2SCKey            = []byte{144, 126, 115, 15, 77, 78, 10, 11, 123, 117, 240, 48, 235, 29, 157, 54} // 907E730F4D4E0A0B7B75F030EB1D9D36
+	auth1Response       = []byte{51, 80, 189, 120, 32, 52, 92, 41, 5, 106, 34, 59, 162, 32, 179, 35}     // 3350BD7820345C29056A223BA220B323
+	zero                = []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}                         // 00000000000000000000000000000000
+	auth1ResponseHeader = []byte{16, 16, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0}               // 10100000FFFFFFFF0000000000000000
+	auth2RequestHeader  = []byte{16, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}                        // 10010000000000000000000000000000
+	auth                = "10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 
 	scErrors = map[string]string{
 		"1":    "System error",
@@ -239,7 +236,7 @@ var (
 			"description": "Device power management",
 		},
 		"diag": {
-			"description": "Diag (execute without paramto show help)",
+			"description": "Diag (execute without param to show help)",
 		},
 		"disp_err": {
 			"description": "Displays errors",

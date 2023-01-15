@@ -32,7 +32,7 @@ func newSyscon(pName, sMode string, noVer bool) syscon {
 	}
 	port, err := serial.Open(pName, mode)
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
 	}
 	return syscon{port: port, mode: sMode, noVerify: noVer}
 }

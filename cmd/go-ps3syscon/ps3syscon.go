@@ -1,13 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"log"
-	"os"
 	"strings"
 
+	"github.com/chzyer/readline"
 	"go.bug.st/serial"
 )
 
@@ -31,20 +31,73 @@ func init() {
 	sysconMode = strings.ToLower(sysconMode)
 }
 
+var completer = readline.NewPrefixCompleter(
+	readline.PcItem("quit"),
+)
+
+func fillPc(cmdList map[string]map[string]string) {
+	for k, v := range cmdList {
+		cmd := readline.PcItem(k)
+		scmd := strings.Split(v["subcommands"], ",")
+		for _, sc := range scmd {
+			cmd.Children = append(cmd.Children, readline.PcItem(sc))
+		}
+		completer.Children = append(completer.Children, cmd)
+	}
+}
+
 func main() {
 	sc := newSyscon(portName, sysconMode, noVerify)
-
-	for {
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Print("> ")
-		cmd, err := reader.ReadString('\n')
-		if err != nil {
-			log.Fatal(err)
+	switch sysconMode {
+	case "cxrf":
+		{
+			fillPc(intCmd)
 		}
-		resp, err := sc.proccessCommand(cmd)
-		if err != nil {
-			log.Print(err)
+	case "cxr", "sw":
+		{
+			fillPc(extCmd)
 		}
-		fmt.Println(resp)
 	}
+
+	l, err := readline.NewEx(&readline.Config{
+		Prompt:          "\033[31mps3syscon>\033[0m ",
+		AutoComplete:    completer,
+		InterruptPrompt: "^C",
+		EOFPrompt:       "exit",
+
+		HistorySearchFold: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	defer l.Close()
+	l.CaptureExitSignal()
+
+	log.SetOutput(l.Stderr())
+	for {
+		line, err := l.Readline()
+		if err == readline.ErrInterrupt {
+			if len(line) == 0 {
+				break
+			} else {
+				continue
+			}
+		} else if err == io.EOF {
+			break
+		}
+
+		line = strings.TrimSpace(line)
+		switch {
+		case line == "quit":
+			goto exit
+		case line == "":
+		default:
+			resp, err := sc.proccessCommand(line)
+			if err != nil {
+				log.Print(err)
+			}
+			fmt.Println(resp)
+		}
+	}
+exit:
 }
