@@ -14,19 +14,18 @@ import (
 var (
 	portName   string
 	sysconMode string
-	noVerify   bool
+	// noVerify   bool
 )
 
 type syscon struct {
-	port     serial.Port
-	mode     string
-	noVerify bool
+	port serial.Port
+	mode string
+	// noVerify bool
 }
 
 func init() {
 	flag.StringVar(&portName, "port", "/dev/tty.usbserial-145410", "port to use")
 	flag.StringVar(&sysconMode, "mode", "CXRF", "syscon mode")
-	flag.BoolVar(&noVerify, "noverify", false, "verify command")
 	flag.Parse()
 	sysconMode = strings.ToLower(sysconMode)
 }
@@ -47,7 +46,7 @@ func fillPc(cmdList map[string]map[string]string) {
 }
 
 func main() {
-	sc := newSyscon(portName, sysconMode, noVerify)
+	sc := newSyscon(portName, sysconMode)
 	switch sysconMode {
 	case "cxrf":
 		{

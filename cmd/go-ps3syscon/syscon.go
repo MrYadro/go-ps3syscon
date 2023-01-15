@@ -12,7 +12,7 @@ var (
 	cmdList map[string]map[string]string
 )
 
-func newSyscon(pName, sMode string, noVer bool) syscon {
+func newSyscon(pName, sMode string) syscon {
 	var mode *serial.Mode
 	switch sMode {
 	case "cxrf":
@@ -34,7 +34,7 @@ func newSyscon(pName, sMode string, noVer bool) syscon {
 	if err != nil {
 		// log.Fatal(err)
 	}
-	return syscon{port: port, mode: sMode, noVerify: noVer}
+	return syscon{port: port, mode: sMode}
 }
 
 func (sc syscon) sendCommand(cmd string) {
