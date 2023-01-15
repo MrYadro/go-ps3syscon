@@ -43,19 +43,19 @@ func (sc syscon) virtualCommandCXRFAuth() string {
 
 	res, err = sc.proccessCommand(auth)
 	if err != nil || len(res) != 128 {
-		return fmt.Sprintln("Wrong response length")
+		return "Wrong response length"
 	}
 	fmt.Println("Right response length")
 
 	resHex, _ := hex.DecodeString(res)
 	if !bytes.Equal(resHex[0:0x10], auth1ResponseHeader) {
-		return fmt.Sprintln("Wrong Auth1 response header")
+		return "Wrong Auth1 response header"
 	}
 	fmt.Println("Right Auth1 response header")
 
 	data := decode(resHex[0x10:0x40])
 	if !bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) || !bytes.Equal(data[0x10:0x20], auth1Response) || !bytes.Equal(data[0x20:0x30], zero) {
-		return fmt.Sprintln("Wrong Auth1 response body")
+		return "Wrong Auth1 response body"
 	}
 	fmt.Println("Right Auth1 response body")
 

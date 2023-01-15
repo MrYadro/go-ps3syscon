@@ -72,13 +72,13 @@ func (sc syscon) virtualCommandCXRAuth() string {
 	res, err := sc.proccessCommand("AUTH1 " + auth)
 	resHex, _ := hex.DecodeString(res)
 	if err != nil || !bytes.Equal(resHex[0:0x10], auth1ResponseHeader) {
-		return fmt.Sprintln("Wrong Auth1 response header")
+		return "Wrong Auth1 response header"
 	}
 	fmt.Println("Right Auth1 response header")
 
 	data := decode(resHex[0x10:0x40])
 	if !bytes.Equal(data[0x8:0x10], zero[0x0:0x8]) || !bytes.Equal(data[0x10:0x20], auth1Response) || !bytes.Equal(data[0x20:0x30], zero) {
-		fmt.Println("Wrong Auth1 response body")
+		return "Wrong Auth1 response body"
 	}
 	fmt.Println("Right Auth1 response body")
 
