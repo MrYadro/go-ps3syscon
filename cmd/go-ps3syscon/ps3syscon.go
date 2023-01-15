@@ -14,13 +14,11 @@ import (
 var (
 	portName   string
 	sysconMode string
-	// noVerify   bool
 )
 
 type syscon struct {
 	port serial.Port
 	mode string
-	// noVerify bool
 }
 
 func init() {
@@ -32,6 +30,9 @@ func init() {
 
 var completer = readline.NewPrefixCompleter(
 	readline.PcItem("quit"),
+	readline.PcItem("auth"),
+	readline.PcItem("errinfo"),
+	readline.PcItem("cmdinfo"),
 )
 
 func fillPc(cmdList map[string]map[string]string) {
@@ -43,6 +44,11 @@ func fillPc(cmdList map[string]map[string]string) {
 		}
 		completer.Children = append(completer.Children, cmd)
 	}
+}
+
+func usage(w io.Writer) {
+	io.WriteString(w, "commands:\n")
+	io.WriteString(w, completer.Tree("    "))
 }
 
 func main() {
@@ -89,6 +95,8 @@ func main() {
 		switch {
 		case line == "quit":
 			goto exit
+		case line == "help":
+			usage(l.Stderr())
 		case line == "":
 		default:
 			resp, err := sc.proccessCommand(line)
