@@ -18,7 +18,7 @@ You can provide `-port` and `-mode`  params when running binary
 
 `-mode` for now supports only `cxrf` and `cxr` mode
 
-List of virtual commands to use:
+List of non-standart commands to use:
 * `auth` - authorises to use other commands
 * `errinfo 0xa0093003` - prints info about `0xa0093003` error `Fatal booting error on step 09 with error info: POWER FAIL`
 * `cmdinfo becount` - prints info about `becount` command `becount - Display bringup/shutdown count + Power-on time, command called with no parametres and no subcommands`

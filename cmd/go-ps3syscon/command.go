@@ -19,22 +19,10 @@ func (sc syscon) getRespTime(cmd string) time.Duration {
 	}
 }
 
-func isVritualCommand(cmd string) bool {
-	switch c := cmd; {
-	case c == "auth",
-		strings.HasPrefix(c, "errinfo"), strings.HasPrefix(c, "cmdinfo"):
-		return true
-	}
-	return false
-}
-
 func (sc syscon) proccessCommand(cmd string) (string, error) {
 	cmd = strings.TrimSpace(cmd)
-	if isVritualCommand(cmd) {
-		return sc.proccessVirtualCommand(cmd), nil // TODO: Error handling
-	} else {
-		sc.sendCommand(cmd)
-		time.Sleep(sc.getRespTime(cmd) * time.Second)
-		return sc.receiveCommand()
-	}
+	sc.sendCommand(cmd)
+	time.Sleep(sc.getRespTime(cmd) * time.Second)
+	return sc.receiveCommand()
+
 }

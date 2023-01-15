@@ -88,13 +88,13 @@ func main() {
 		case line == "help":
 			usage(l.Stderr())
 		case strings.HasPrefix(line, "auth"):
-			fmt.Println(sc.virtualCommandAuth())
+			fmt.Println(sc.commandAuth())
 		case strings.HasPrefix(line, "errinfo"):
 			line := strings.TrimSpace(line[7:])
-			fmt.Println(sc.virtualCommandErrinfo(line))
+			fmt.Println(sc.commandErrinfo(line))
 		case strings.HasPrefix(line, "cmdinfo"):
 			line := strings.TrimSpace(line[7:])
-			fmt.Println(sc.virtualCommandCmdinfo(line))
+			fmt.Println(sc.commandCmdinfo(line))
 		case line == "":
 		default:
 			resp, err := sc.proccessCommand(line)

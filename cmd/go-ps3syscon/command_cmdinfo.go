@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func (sc syscon) virtualCommandCmdinfo(cmd string) string {
+func (sc syscon) commandCmdinfo(cmd string) string {
 	cm, ok := cmdList[cmd]
 	if ok {
 		params, ok := cm["parametres"]

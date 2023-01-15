@@ -34,7 +34,7 @@ func (sc syscon) receiveCXRFCommand() (string, error) {
 	return "", errors.New("wrong response")
 }
 
-func (sc syscon) virtualCommandCXRFAuth() string {
+func (sc syscon) commandCXRFAuth() string {
 	res, err := sc.proccessCommand("scopen")
 	if err != nil || res != "SC_READY" {
 		return fmt.Sprintf("Error opening syscon\n%s\n", res)

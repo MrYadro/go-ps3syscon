@@ -68,7 +68,7 @@ func (sc syscon) receiveCXRCommand() (string, error) {
 	return "", errors.New("wrong response code")
 }
 
-func (sc syscon) virtualCommandCXRAuth() string {
+func (sc syscon) commandCXRAuth() string {
 	res, err := sc.proccessCommand("AUTH1 " + auth)
 	resHex, _ := hex.DecodeString(res)
 	if err != nil || !bytes.Equal(resHex[0:0x10], auth1ResponseHeader) {
