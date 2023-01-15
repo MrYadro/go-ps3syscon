@@ -13,24 +13,26 @@ var (
 )
 
 func newSyscon(pName, sMode string) syscon {
-	var mode *serial.Mode
+	var pMode *serial.Mode
 	switch sMode {
 	case "cxrf":
 		{
-			mode = &serial.Mode{
+			pMode = &serial.Mode{
 				BaudRate: 115200,
 			}
 			cmdList = intCmd
+			fillPc(intCmd)
 		}
 	case "cxr", "sw":
 		{
-			mode = &serial.Mode{
+			pMode = &serial.Mode{
 				BaudRate: 57600,
 			}
 			cmdList = extCmd
+			fillPc(extCmd)
 		}
 	}
-	port, err := serial.Open(pName, mode)
+	port, err := serial.Open(pName, pMode)
 	if err != nil {
 		// log.Fatal(err)
 	}

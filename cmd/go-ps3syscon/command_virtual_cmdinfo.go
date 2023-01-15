@@ -6,8 +6,7 @@ import (
 )
 
 func (sc syscon) VirtualCommandCmdinfo(cmd string) string {
-	command := strings.Split(cmd, " ")
-	cm, ok := cmdList[command[1]]
+	cm, ok := cmdList[cmd]
 	if ok {
 		params, ok := cm["parametres"]
 		if ok {
@@ -21,7 +20,7 @@ func (sc syscon) VirtualCommandCmdinfo(cmd string) string {
 		} else {
 			subcmd = "no"
 		}
-		return fmt.Sprintf("%s - %s, command called with %s parametres and %s subcommands", command[1], cm["description"], params, subcmd)
+		return fmt.Sprintf("%s - %s, command called with %s parametres and %s subcommands", cmd, cm["description"], params, subcmd)
 	}
 	return "Wrong command"
 }

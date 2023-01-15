@@ -53,16 +53,6 @@ func usage(w io.Writer) {
 
 func main() {
 	sc := newSyscon(portName, sysconMode)
-	switch sysconMode {
-	case "cxrf":
-		{
-			fillPc(intCmd)
-		}
-	case "cxr", "sw":
-		{
-			fillPc(extCmd)
-		}
-	}
 
 	l, err := readline.NewEx(&readline.Config{
 		Prompt:          "\033[31mps3syscon>\033[0m ",
@@ -97,6 +87,12 @@ func main() {
 			goto exit
 		case line == "help":
 			usage(l.Stderr())
+		case strings.HasPrefix(line, "errinfo"):
+			line := strings.TrimSpace(line[7:])
+			fmt.Println(sc.VirtualCommandErrinfo(line))
+		case strings.HasPrefix(line, "cmdinfo"):
+			line := strings.TrimSpace(line[7:])
+			fmt.Println(sc.VirtualCommandCmdinfo(line))
 		case line == "":
 		default:
 			resp, err := sc.proccessCommand(line)

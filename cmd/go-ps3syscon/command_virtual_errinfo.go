@@ -3,15 +3,13 @@ package main
 import (
 	"fmt"
 	"regexp"
-	"strings"
 )
 
 func (sc syscon) VirtualCommandErrinfo(cmd string) string {
-	errCode := strings.Split(cmd, " ")
-	if len(errCode) < 2 {
+	if len(cmd) == 0 {
 		return "Please provide error code!"
 	} else {
-		return parseErrorCode(errCode[1])
+		return parseErrorCode(cmd)
 	}
 }
 
