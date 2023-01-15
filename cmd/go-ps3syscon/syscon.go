@@ -34,6 +34,7 @@ func newSyscon(pName, sMode string) syscon {
 	}
 	port, err := serial.Open(pName, pMode)
 	if err != nil {
+		fmt.Printf("Could not find serial: %s\n", pName)
 		log.Fatal(err)
 	}
 	return syscon{port: port, mode: sMode}

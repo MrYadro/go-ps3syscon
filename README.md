@@ -4,6 +4,12 @@
 
 Golang implementation of syscon for PlayStation 3
 
+You can download pre build binaries from releases
+
+If you want to build it yourself use (you sould have golang installed)
+
+`go install github.com/MrYadro/go-ps3syscon/cmd/go-ps3syscon@latest`
+
 You can provide `-port` and `-mode`  params when running binary
 
 `-port` is your USB to TTL port
