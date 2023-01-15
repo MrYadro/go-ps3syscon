@@ -14,3 +14,5 @@ List of virtual commands to use:
 * `auth` - authorises to use other commands
 * `errinfo 0xa0093003` - prints info about `0xa0093003` error `Fatal booting error on step 09 with error info: POWER FAIL`
 * `cmdinfo becount` - prints info about `becount` command `becount - Display bringup/shutdown count + Power-on time, command called with no parametres and no subcommands`
+
+A PS3 Story: The Yellow Light Of Death: https://www.youtube.com/watch?v=I0UMG3iVYZI
