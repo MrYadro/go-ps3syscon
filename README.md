@@ -4,13 +4,11 @@
 
 Golang implementation of syscon for PlayStation 3
 
-You can provide `-port`, `-mode` and `-noverify`  params when running binary
+You can provide `-port` and `-mode`  params when running binary
 
 `-port` is your USB to TTL port
 
 `-mode` for now supports only `cxrf` and `cxr` mode
-
-`-noverify` don't verify passed commands
 
 List of virtual commands to use:
 * `auth` - authorises to use other commands
