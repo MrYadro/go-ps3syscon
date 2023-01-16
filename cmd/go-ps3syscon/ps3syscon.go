@@ -22,7 +22,7 @@ type syscon struct {
 }
 
 func init() {
-	flag.StringVar(&portName, "port", "/dev/tty.usbserial-145410", "port to use")
+	flag.StringVar(&portName, "port", "/dev/tty.usbserial-21410", "port to use")
 	flag.StringVar(&sysconMode, "mode", "CXRF", "syscon mode")
 	flag.Parse()
 	sysconMode = strings.ToLower(sysconMode)

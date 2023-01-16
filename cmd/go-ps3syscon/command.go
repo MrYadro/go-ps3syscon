@@ -24,5 +24,4 @@ func (sc syscon) proccessCommand(cmd string) (string, error) {
 	sc.sendCommand(cmd)
 	time.Sleep(sc.getRespTime(cmd) * time.Second)
 	return sc.receiveCommand()
-
 }
