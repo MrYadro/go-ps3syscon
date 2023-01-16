@@ -9,8 +9,9 @@
 You can download pre build binaries from releases
 
 If you want to build it yourself use (you sould have golang installed)
-
-`go install github.com/MrYadro/go-ps3syscon/cmd/go-ps3syscon@latest`
+```
+go install github.com/MrYadro/go-ps3syscon/cmd/go-ps3syscon@latest
+```
 
 ## How to use it
 
