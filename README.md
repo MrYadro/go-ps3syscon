@@ -2,7 +2,7 @@
 
 [![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml) [![Build](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![releases](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total)](https://github.com/MrYadro/go-ps3syscon/releases) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
 
-![alt text](https://user-images.githubusercontent.com/1587606/212574878-ea04b9ab-2da7-4873-91e6-45992a43d59e.png)
+![syscon preview](https://user-images.githubusercontent.com/1587606/212574878-ea04b9ab-2da7-4873-91e6-45992a43d59e.png)
 
 ## Building and releases
 
