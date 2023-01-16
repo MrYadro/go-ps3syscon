@@ -14,7 +14,7 @@ func (sc syscon) sendCXRFCommand(cmd string) {
 }
 
 func (sc syscon) receiveCXRFCommand() (string, error) {
-	buff := make([]byte, 1000)
+	buff := make([]byte, 1500)
 	for {
 		n, err := sc.port.Read(buff)
 		fmt.Printf("Read %v bytes\n", n)

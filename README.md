@@ -1,8 +1,8 @@
 # go-ps3syscon Syscon for PlayStation 3
 
-<img width="541" alt="Screenshot 2023-01-16 at 03 01 41" src="https://user-images.githubusercontent.com/1587606/212574878-ea04b9ab-2da7-4873-91e6-45992a43d59e.png">
-
 [![Publish Release](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/release.yml) [![Build](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/build.yml) [![CodeQL](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml/badge.svg)](https://github.com/MrYadro/go-ps3syscon/actions/workflows/codeql.yml) [![report card](https://goreportcard.com/badge/github.com/MrYadro/go-ps3syscon)](https://goreportcard.com/report/github.com/MrYadro/go-ps3syscon) [![releases](https://img.shields.io/github/downloads-pre/MrYadro/go-ps3syscon/latest/total)](https://github.com/MrYadro/go-ps3syscon/releases) [![version](https://img.shields.io/github/v/release/MrYadro/go-ps3syscon?include_prereleases)](https://github.com/MrYadro/go-ps3syscon/releases)
+
+![alt text](https://user-images.githubusercontent.com/1587606/212574878-ea04b9ab-2da7-4873-91e6-45992a43d59e.png)
 
 ## Building and releases
 

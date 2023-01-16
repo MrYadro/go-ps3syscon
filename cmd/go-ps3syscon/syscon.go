@@ -37,6 +37,7 @@ func newSyscon(pName, sMode string) syscon {
 		fmt.Printf("Could not find serial: %s\n", pName)
 		log.Fatal(err)
 	}
+	port.ResetInputBuffer()
 	return syscon{port: port, mode: sMode}
 }
 
