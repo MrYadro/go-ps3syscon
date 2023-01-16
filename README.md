@@ -20,6 +20,8 @@ You can provide `-port` and `-mode`  params when running binary
 
 `-mode` for now supports only `cxrf` and `cxr` mode
 
+Every command has it's autocompleteon so use tab more often
+
 List of non-standart commands to use:
 * `auth` - authorises to use other commands
 * `errinfo 0xa0093003` - prints info about `0xa0093003` error `Fatal booting error on step 09 with error info: POWER FAIL`
