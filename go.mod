@@ -1,6 +1,6 @@
 module github.com/MrYadro/go-ps3syscon
 
-go 1.19
+go 1.20
 
 require (
 	github.com/chzyer/readline v1.5.1
