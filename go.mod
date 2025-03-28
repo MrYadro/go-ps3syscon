@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/chzyer/readline v1.5.1
-	go.bug.st/serial v1.6.3
+	go.bug.st/serial v1.6.4
 )
 
 require (
