@@ -3,6 +3,7 @@
 package protocol
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"strings"
@@ -79,7 +80,7 @@ func (c *Conn) Command(cmd string) (Result, error) {
 // countChecksum is the 8-bit ASCII sum used by every mode.
 func countChecksum(s string) byte {
 	var sum byte
-	for i := 0; i < len(s); i++ {
+	for i := range len(s) {
 		sum += s[i]
 	}
 	return sum
@@ -103,13 +104,17 @@ func (c *Conn) write(b []byte) error {
 // errors (deadline, EOF) or returns no bytes ends accumulation. Per the
 // spec, a buffer that already parses as a complete CXR frame also ends
 // accumulation, so one Command consumes exactly one response frame. With
-// no bytes at all, the error is returned.
+// no bytes at all, the error is returned. A cheap incremental precheck
+// (frame magic plus a running colon count) avoids re-attempting the full
+// parse on every chunk.
 func (c *Conn) readUntilIdle() ([]byte, error) {
 	var data []byte
 	chunk := make([]byte, 1024)
+	colons := 0
 	for {
 		n, err := c.RW.Read(chunk)
 		data = append(data, chunk[:n]...)
+		colons += bytes.Count(chunk[:n], colon)
 		if err != nil {
 			if len(data) > 0 {
 				return data, nil
@@ -122,8 +127,32 @@ func (c *Conn) readUntilIdle() ([]byte, error) {
 			}
 			return nil, fmt.Errorf("read: no data")
 		}
-		if _, perr := parseCXR(string(data)); perr == nil {
-			return data, nil
+		// Cheap incremental precheck before the full parse: a CXR frame
+		// has exactly three colon-separated parts and the R|E: magic
+		// after leading whitespace. Colons never disappear, so once
+		// the count passes 2 the buffer can never parse.
+		if colons == 2 && hasCXRMagic(data) {
+			if _, perr := parseCXR(string(data)); perr == nil {
+				return data, nil
+			}
 		}
 	}
+}
+
+var colon = []byte(":")
+
+// hasCXRMagic reports whether data starts, after leading ASCII
+// whitespace, with the "R:" or "E:" frame magic — a necessary condition
+// for parseCXR to succeed.
+func hasCXRMagic(data []byte) bool {
+	i := 0
+	for i < len(data) {
+		switch data[i] {
+		case ' ', '\t', '\r', '\n', '\v', '\f':
+			i++
+			continue
+		}
+		break
+	}
+	return i+1 < len(data) && (data[i] == 'R' || data[i] == 'E') && data[i+1] == ':'
 }
