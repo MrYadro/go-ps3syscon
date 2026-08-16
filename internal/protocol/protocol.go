@@ -100,8 +100,10 @@ func (c *Conn) write(b []byte) error {
 }
 
 // readUntilIdle accumulates reads until the port goes idle: a Read that
-// errors (deadline, EOF) or returns no bytes ends accumulation. With no
-// bytes at all, the error is returned.
+// errors (deadline, EOF) or returns no bytes ends accumulation. Per the
+// spec, a buffer that already parses as a complete CXR frame also ends
+// accumulation, so one Command consumes exactly one response frame. With
+// no bytes at all, the error is returned.
 func (c *Conn) readUntilIdle() ([]byte, error) {
 	var data []byte
 	chunk := make([]byte, 1024)
@@ -119,6 +121,9 @@ func (c *Conn) readUntilIdle() ([]byte, error) {
 				return data, nil
 			}
 			return nil, fmt.Errorf("read: no data")
+		}
+		if _, perr := parseCXR(string(data)); perr == nil {
+			return data, nil
 		}
 	}
 }
