@@ -90,9 +90,11 @@ CXR: 57600. CXRF: 115200. SW: 57600. (Matches reference; not user-configurable.)
 
 ### CXR (external service mode)
 
-- Send: `C:{csum:02X}:{cmd}` written in 15-byte chunks, terminating `\r\n`.
-  The full formatted string is split on 15-byte boundaries — byte-identical to
-  the reference implementation.
+- Send: if `len(cmd) <= 10`, one write of `C:{csum:02X}:{cmd}\r\n`. Otherwise
+  write `C:{csum:02X}:{cmd[:10]}`, then the remaining payload in 15-byte
+  chunks, with the final chunk (possibly empty) terminating `\r\n` —
+  byte-identical to the reference Python implementation (`command()`, CXR
+  branch).
 - Checksum: 8-bit sum of ASCII bytes of the payload portion (`cmd` on send,
   `data` on receive), formatted `%02X`.
 - Receive frame: `R|E:{csum}:{data}` — verify magic, verify checksum.
