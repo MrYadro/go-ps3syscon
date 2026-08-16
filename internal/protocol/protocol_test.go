@@ -42,7 +42,7 @@ func TestParseMode(t *testing.T) {
 	for in, want := range map[string]Mode{
 		"cxr": ModeCXR, "CXR": ModeCXR,
 		"cxrf": ModeCXRF,
-		"sw": ModeSW, "SW": ModeSW,
+		"sw":   ModeSW, "SW": ModeSW,
 	} {
 		got, err := ParseMode(in)
 		if err != nil || got != want {
