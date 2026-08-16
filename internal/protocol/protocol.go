@@ -122,5 +122,3 @@ func (c *Conn) readUntilIdle() ([]byte, error) {
 		}
 	}
 }
-
-func (c *Conn) swCommand(cmd string) (Result, error) { return Result{}, nil }
