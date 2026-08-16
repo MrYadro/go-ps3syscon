@@ -17,7 +17,7 @@ func (c *Conn) swCommand(cmd string) (Result, error) {
 			return Result{}, fmt.Errorf("sw: setcmdlong: %w", err)
 		}
 		if res.Code != 0 {
-			return Result{Code: 0xFFFFFFFF, Raw: "SETCMDLONG failed"}, nil
+			return Result{Code: 0xFFFFFFFF, Raw: "SETCMDLONG failed", Lines: []string{"SETCMDLONG failed"}}, nil
 		}
 	}
 	if err := c.swSend(cmd); err != nil {

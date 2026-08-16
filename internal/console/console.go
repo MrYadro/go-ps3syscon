@@ -65,6 +65,7 @@ func (c *Console) HandleLine(line string) (string, bool) {
 func (c *Console) Batch(cmds []string) {
 	for _, cmd := range cmds {
 		fmt.Fprintf(c.Out, "> %s\n", cmd)
+		c.logLine(cmd)
 		out, quit := c.HandleLine(cmd)
 		if out != "" {
 			c.emit(out)
@@ -94,6 +95,10 @@ func (c *Console) Run() error {
 		if err != nil { // ErrInterrupt or io.EOF (exit prompt)
 			return nil
 		}
+		if line != "" {
+			// Log only: the terminal already shows the typed line.
+			c.logLine(line)
+		}
 		out, quit := c.HandleLine(line)
 		if out != "" {
 			c.emit(out)
@@ -108,6 +113,13 @@ func (c *Console) emit(s string) {
 	fmt.Fprintln(c.Out, s)
 	if c.LogFile != nil {
 		fmt.Fprintln(c.LogFile, s)
+	}
+}
+
+// logLine records an accepted command line in the session log.
+func (c *Console) logLine(line string) {
+	if c.LogFile != nil {
+		fmt.Fprintf(c.LogFile, "> %s\n", line)
 	}
 }
 

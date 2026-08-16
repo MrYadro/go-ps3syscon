@@ -175,7 +175,14 @@ func TestBatchWritesOutAndLog(t *testing.T) {
 	if !strings.Contains(log.String(), "SCM-4.4.2") {
 		t.Fatalf("log = %q", log.String())
 	}
+	if !strings.Contains(log.String(), "> version") {
+		t.Fatalf("log must record the command, got %q", log.String())
+	}
 	if strings.Contains(out.String(), "> auth") {
 		t.Fatal("quit must stop batch processing")
 	}
 }
+
+// The Run (interactive REPL) path also logs accepted lines to LogFile, but
+// it is untested-by-design here: Run requires a readline TTY. Batch above
+// covers the shared "> cmd" log-line contract.

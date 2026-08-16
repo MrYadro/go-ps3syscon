@@ -17,6 +17,20 @@ func TestCXRFCommand(t *testing.T) {
 	}
 }
 
+// On real hardware the echoed command arrives in its own Read before the
+// response: readUntilCRLF must not stop on the echo's CRLF.
+func TestCXRFCommandEchoSeparateRead(t *testing.T) {
+	f := newFakePort([]byte("version\r\n"), []byte("SCM-4.4.2\r\n"))
+	c := NewConn(f, ModeCXRF)
+	res, err := c.Command("version")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Raw != "SCM-4.4.2" {
+		t.Fatalf("Raw = %q, want SCM-4.4.2", res.Raw)
+	}
+}
+
 // Response may arrive split across several reads before the CRLF lands.
 func TestCXRFCommandSplitReads(t *testing.T) {
 	f := newFakePort([]byte("ve"), []byte("rsion\r"), []byte("\nSCM-3."), []byte("0\r\n"))
