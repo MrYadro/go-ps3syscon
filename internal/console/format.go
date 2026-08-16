@@ -47,17 +47,12 @@ func (c *Console) cmdinfo(arg string) string {
 	if !ok {
 		return "Wrong command"
 	}
-	params, ok := cm["parametres"]
-	if ok {
-		params = strings.Join(strings.Split(params, ","), ", ")
-	} else {
-		params = "no"
+	params, subs := "no", "no"
+	if cm.params != "" {
+		params = strings.ReplaceAll(cm.params, ",", ", ")
 	}
-	subcmd, ok := cm["subcommands"]
-	if ok {
-		subcmd = strings.Join(strings.Split(subcmd, ","), ", ")
-	} else {
-		subcmd = "no"
+	if cm.subs != "" {
+		subs = strings.ReplaceAll(cm.subs, ",", ", ")
 	}
-	return fmt.Sprintf("%s - %s, command called with %s parametres and %s subcommands", arg, cm["description"], params, subcmd)
+	return fmt.Sprintf("%s - %s, command called with %s parametres and %s subcommands", arg, cm.description, params, subs)
 }

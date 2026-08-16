@@ -24,11 +24,13 @@ type Console struct {
 	Mode    protocol.Mode
 	LogFile io.Writer // optional: results are appended here
 	Out     io.Writer // REPL/batch output; defaults to os.Stdout
+
+	completer *readline.PrefixCompleter // built once for the mode
 }
 
 // New creates a Console. logFile may be nil.
 func New(sc Commander, mode protocol.Mode, logFile io.Writer) *Console {
-	return &Console{SC: sc, Mode: mode, LogFile: logFile, Out: os.Stdout}
+	return &Console{SC: sc, Mode: mode, LogFile: logFile, Out: os.Stdout, completer: newCompleter(mode)}
 }
 
 // HandleLine processes one input line, returning its output and whether
@@ -80,7 +82,7 @@ func (c *Console) Batch(cmds []string) {
 func (c *Console) Run() error {
 	l, err := readline.NewEx(&readline.Config{
 		Prompt:            "\033[31mps3syscon>\033[0m ",
-		AutoComplete:      newCompleter(c.Mode),
+		AutoComplete:      c.completer,
 		InterruptPrompt:   "^C",
 		EOFPrompt:         "exit",
 		HistorySearchFold: true,
@@ -124,7 +126,7 @@ func (c *Console) logLine(line string) {
 }
 
 func (c *Console) usage() string {
-	return "commands:\n" + newCompleter(c.Mode).Tree("    ")
+	return "commands:\n" + c.completer.Tree("    ")
 }
 
 // newCompleter builds tab completion: built-ins plus the mode's command table.
@@ -139,8 +141,8 @@ func newCompleter(mode protocol.Mode) *readline.PrefixCompleter {
 	)
 	for name, meta := range table {
 		item := readline.PcItem(name)
-		if subs, ok := meta["subcommands"]; ok && subs != "" {
-			for _, sc := range strings.Split(subs, ",") {
+		if meta.subs != "" {
+			for sc := range strings.SplitSeq(meta.subs, ",") {
 				item.Children = append(item.Children, readline.PcItem(sc))
 			}
 		}
@@ -149,7 +151,7 @@ func newCompleter(mode protocol.Mode) *readline.PrefixCompleter {
 	return pc
 }
 
-func cmdTable(mode protocol.Mode) map[string]map[string]string {
+func cmdTable(mode protocol.Mode) map[string]cmdMeta {
 	if mode == protocol.ModeCXRF {
 		return intCmd
 	}

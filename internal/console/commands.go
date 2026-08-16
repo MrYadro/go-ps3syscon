@@ -1,5 +1,12 @@
 package console
 
+// cmdMeta describes one syscon command for cmdinfo output and completion.
+type cmdMeta struct {
+	description string
+	params      string
+	subs        string
+}
+
 var (
 	scErrors = map[string]string{
 		"1":    "System error",
@@ -105,427 +112,145 @@ var (
 		"4441": "BE or SB Error (IC1001 or IC3001)",
 	}
 
-	extCmd = map[string]map[string]string{
-		"BOOT": {
-			"subcommands": "TEST,CONT",
-			"description": "",
-		},
+	extCmd = map[string]cmdMeta{
+		"BOOT":       {subs: "TEST,CONT"},
 		"SHUTDOWN":   {},
 		"HALT":       {},
 		"BOOTENABLE": {},
 		"AUTH1":      {},
 		"AUTH2":      {},
-		"AUTHVER": {
-			"subcommands": "SET,GET",
-		},
-		"EEP": {
-			"subcommands": "INIT,SET,GET",
-		},
-		"PDAREA": {
-			"subcommands": "SET,GET",
-		},
-		"CSAREA": {
-			"subcommands": "SET,GET",
-		},
-		"VID": {
-			"subcommands": "GET",
-		},
-		"CID": {
-			"subcommands": "GET",
-		},
-		"ECID": {
-			"subcommands": "GET",
-		},
-		"REV": {
-			"subcommands": "SB",
-		},
-		"SPU": {
-			"subcommands": "INFO",
-		},
-		"KSV": {},
-		"FAN": {
-			"subcommands": "SETPOLICY,GETPOLICY,START,STOP,SETDUTY,GETDUTY",
-		},
-		"R8":       {},
-		"W8":       {},
-		"R16":      {},
-		"W16":      {},
-		"R32":      {},
-		"W32":      {},
-		"RBE":      {},
-		"WBE":      {},
-		"PORTSTAT": {},
-		"VER":      {},
-		"BUZ":      {},
-		"SERVFAN":  {},
-		"ERRLOG": {
-			"subcommands": "START,STOP,GET,CLEAR",
-		},
+		"AUTHVER":    {subs: "SET,GET"},
+		"EEP":        {subs: "INIT,SET,GET"},
+		"PDAREA":     {subs: "SET,GET"},
+		"CSAREA":     {subs: "SET,GET"},
+		"VID":        {subs: "GET"},
+		"CID":        {subs: "GET"},
+		"ECID":       {subs: "GET"},
+		"REV":        {subs: "SB"},
+		"SPU":        {subs: "INFO"},
+		"KSV":        {},
+		"FAN":        {subs: "SETPOLICY,GETPOLICY,START,STOP,SETDUTY,GETDUTY"},
+		"R8":         {},
+		"W8":         {},
+		"R16":        {},
+		"W16":        {},
+		"R32":        {},
+		"W32":        {},
+		"RBE":        {},
+		"WBE":        {},
+		"PORTSTAT":   {},
+		"VER":        {},
+		"BUZ":        {},
+		"SERVFAN":    {},
+		"ERRLOG":     {subs: "START,STOP,GET,CLEAR"},
 	}
 
-	intCmd = map[string]map[string]string{
-		"becount": {
-			"description": "Display bringup/shutdown count + Power-on time",
-		},
-		"bepgoff": {
-			"description": "BE power grid off",
-		},
-		"bepkt": {
-			"subcommands": "show,set,unset,mode,debug,help",
-			"description": "Packet permissions",
-		},
-		"bestat": {
-			"description": "Get status of BE",
-		},
-		"boardconfig": {
-			"description": "Displays board configuration",
-		},
-		"bootbeep": {
-			"subcommands": "stat,on,off",
-			"description": "Boot beep",
-		},
-		"bringup": {
-			"description": "Turn PS3 on",
-		},
-		"bsn": {
-			"description": "Get board serial number",
-		},
-		"bstatus": {
-			"description": "HDMI related status",
-		},
-		"buzz": {
-			"description": "Activate buzzer",
-			"parametres":  "freq",
-		},
-		"buzzpattern": {
-			"description": "Buzzer pattern",
-			"parametres":  "freq,pattern,count",
-		},
-		"clear_err": {
-			"subcommands": "last,eeprom,all",
-			"description": "Clear errors",
-		},
-		"clearerrlog": {
-			"description": "Clears error log",
-		},
-		"comm": {
-			"description": "Communication mode",
-		},
-		"commt": {
-			"subcommands": "help,start,stop,send",
-			"description": "Manual BE communication",
-		},
-		"cp": {
-			"subcommands": "ready,busy,reset,beepremote,beep2kn1n3,beep2kn2n3",
-			"description": "CP control commands",
-		},
-		"csum": {
-			"description": "Firmware checksum",
-		},
-		"devpm": {
-			"subcommands": "ata,pci,pciex,rsx",
-			"description": "Device power management",
-		},
-		"diag": {
-			"description": "Diag (execute without param to show help)",
-		},
-		"disp_err": {
-			"description": "Displays errors",
-		},
-		"duty": {
-			"subcommands": "get,set,getmin,setmin,getmax,setmax,getinmin,setinmin,getinmax,setinmax",
-			"description": "Fan policy",
-		},
-		"dve": {
-			"subcommands": "help,set,save,show",
-			"description": "DVE chip parameters",
-		},
-		"eepcsum": {
-			"description": "Shows eeprom checksum",
-		},
-		"eepromcheck": {
-			"description": "Check eeprom",
-			"parametres":  "id",
-		},
-		"eeprominit": {
-			"description": "Init eeprom",
-			"parametres":  "id",
-		},
-		"ejectsw": {
-			"description": "Eject switch",
-		},
-		"errlog": {
-			"description": "Gets the error log",
-		},
-		"fancon": {
-			"description": "Does nothing",
-		},
-		"fanconautotype": {
-			"description": "Does nothing",
-		},
-		"fanconmode": {
-			"subcommands": "get",
-			"description": "Fan control mode",
-		},
-		"fanconpolicy": {
-			"subcommands": "get,set,getini,setini",
-			"description": "Fan control policy",
-		},
-		"fandiag": {
-			"description": "Fan test",
-		},
-		"faninictrl": {
-			"description": "Does nothing",
-		},
-		"fanpol": {
-			"description": "Does nothing",
-		},
-		"fanservo": {
-			"description": "Does nothing",
-		},
-		"fantbl": {
-			"subcommands": "get,set,getini,setini,gettable,settable",
-			"description": "Fan table",
-		},
-		"firmud": {
-			"description": "Firmware update",
-		},
-		"geterrlog": {
-			"description": "Gets error log",
-			"parametres":  "id",
-		},
-		"getrtc": {
-			"description": "Gets rtc",
-		},
-		"halt": {
-			"description": "Halts syscon",
-		},
-		"hdmi": {
-			"description": "HDMI (various commands, use help)",
-		},
-		"hdmiid": {
-			"description": "Get HDMI id's",
-		},
-		"hdmiid2": {
-			"description": "Get HDMI id's",
-		},
-		"hversion": {
-			"description": "Platform ID",
-		},
-		"hyst": {
-			"subcommands": "get,set,getini,setini",
-			"description": "Temperature zones",
-		},
-		"lasterrlog": {
-			"description": "Last error from log",
-		},
-		"ledmode": {
-			"description": "Get led mode",
-			"parametres":  "id,id",
-		},
-		"LS": {
-			"description": "LabStation Mode",
-		},
-		"ltstest": {
-			"subcommands": "get,set",
-			"description": "?Temp related? values",
-		},
-		"osbo": {
-			"description": "Sets 0x2000F60",
-		},
-		"patchcsum": {
-			"description": "Patch checksum",
-		},
-		"patchvereep": {
-			"description": "Patch version eeprom",
-		},
-		"patchverram": {
-			"description": "Patch version ram",
-		},
-		"poll": {
-			"description": "Poll log",
-		},
-		"portscan": {
-			"description": "Scan port",
-			"parametres":  "port",
-		},
-		"powbtnmode": {
-			"description": "Power button mode",
-			"parametres":  "mode",
-		},
-		"powerstate": {
-			"description": "Get power state",
-		},
-		"powersw": {
-			"description": "Power switch",
-		},
-		"powupcause": {
-			"description": "Power up cause",
-		},
-		"printmode": {
-			"description": "Set printmode",
-			"parametres":  "mode",
-		},
-		"printpatch": {
-			"description": "Prints patch",
-		},
-		"r": {
-			"description": "Read byte from SC",
-			"parametres":  "offset,length",
-		},
-		"r16": {
-			"description": "Read word from SC",
-			"parametres":  "offset,length",
-		},
-		"r32": {
-			"description": "Read dword from SC",
-			"parametres":  "offset,length",
-		},
-		"r64": {
-			"description": "Read qword from SC",
-			"parametres":  "offset,length",
-		},
-		"r64d": {
-			"description": "Read qword data from SC",
-			"parametres":  "offset,length",
-		},
-		"rbe": {
-			"description": "Read from BE",
-			"parametres":  "offset",
-		},
-		"recv": {
-			"description": "Receive something",
-		},
-		"resetsw": {
-			"description": "Reset switch",
-		},
-		"restartlogerrtoeep": {
-			"description": "Reenable error logging to eeprom",
-		},
-		"revision": {
-			"description": "Get softid",
-		},
-		"rrsxc": {
-			"description": "Read from RSX",
-			"parametres":  "offset,length",
-		},
-		"rtcreset": {
-			"description": "Reset RTC",
-		},
-		"scagv2": {
-			"description": "Auth related?",
-		},
-		"scasv2": {
-			"description": "Auth related?",
-		},
-		"scclose": {
-			"description": "Close syscon",
-		},
-		"scopen": {
-			"description": "Open syscon",
-		},
-		"send": {
-			"description": "Send something",
-			"parametres":  "variable",
-		},
-		"shutdown": {
-			"description": "PS3 shutdown",
-		},
-		"startlogerrtsk": {
-			"description": "Start error log task",
-		},
-		"stoplogerrtoeep": {
-			"description": "Stop error logging to eeprom",
-		},
-		"stoplogerrtsk": {
-			"description": "Stop error log task",
-		},
-		"syspowdown": {
-			"description": "System power down",
-			"parametres":  "param,param,param",
-		},
-		"task": {
-			"description": "Print tasks",
-		},
-		"thalttest": {
-			"description": "Does nothing",
-		},
-		"thermfatalmode": {
-			"subcommands": "canboot,cannotboot",
-			"description": "Set thermal boot mode",
-		},
-		"therrclr": {
-			"description": "Thermal register clear",
-		},
-		"thrm": {
-			"description": "Does nothing",
-		},
-		"tmp": {
-			"description": "Get temperature",
-			"parametres":  "zone",
-		},
-		"trace": {
-			"description": "Trace tasks (use help)",
-		},
-		"trp": {
-			"subcommands": "get,set,getini,setini",
-			"description": "Temperature zones",
-		},
-		"tsensor": {
-			"description": "Get raw temperature",
-			"parametres":  "sensor",
-		},
-		"tshutdown": {
-			"subcommands": "get,set,getini,setini",
-			"description": "Thermal shutdown",
-		},
-		"tshutdowntime": {
-			"description": "Thermal shutdown time",
-			"parametres":  "time",
-		},
-		"tzone": {
-			"description": "Show thermal zones",
-		},
-		"version": {
-			"description": "SC firmware version",
-		},
-		"w": {
-			"description": "Write byte to SC",
-			"parametres":  "offset,value",
-		},
-		"w16": {
-			"description": "Write word to SC",
-			"parametres":  "offset,value",
-		},
-		"w32": {
-			"description": "Write bword to SC",
-			"parametres":  "offset,value",
-		},
-		"w64": {
-			"description": "Write qword to SC",
-			"parametres":  "offset,value",
-		},
-		"wbe": {
-			"description": "Write to BE",
-			"parametres":  "offset,value",
-		},
-		"wmmto": {
-			"subcommands": "get",
-			"description": "Get watchdog timeout",
-		},
-		"wrsxc": {
-			"description": "Write to RSX",
-			"parametres":  "offset,value",
-		},
-		"xdrdiag": {
-			"subcommands": "start,info,result",
-			"description": "XDR diag",
-		},
-		"xiodiag": {
-			"description": "XIO diag",
-		},
-		"xrcv": {
-			"description": "Xmodem receive",
-		},
+	intCmd = map[string]cmdMeta{
+		"becount":            {description: "Display bringup/shutdown count + Power-on time"},
+		"bepgoff":            {description: "BE power grid off"},
+		"bepkt":              {subs: "show,set,unset,mode,debug,help", description: "Packet permissions"},
+		"bestat":             {description: "Get status of BE"},
+		"boardconfig":        {description: "Displays board configuration"},
+		"bootbeep":           {subs: "stat,on,off", description: "Boot beep"},
+		"bringup":            {description: "Turn PS3 on"},
+		"bsn":                {description: "Get board serial number"},
+		"bstatus":            {description: "HDMI related status"},
+		"buzz":               {description: "Activate buzzer", params: "freq"},
+		"buzzpattern":        {description: "Buzzer pattern", params: "freq,pattern,count"},
+		"clear_err":          {subs: "last,eeprom,all", description: "Clear errors"},
+		"clearerrlog":        {description: "Clears error log"},
+		"comm":               {description: "Communication mode"},
+		"commt":              {subs: "help,start,stop,send", description: "Manual BE communication"},
+		"cp":                 {subs: "ready,busy,reset,beepremote,beep2kn1n3,beep2kn2n3", description: "CP control commands"},
+		"csum":               {description: "Firmware checksum"},
+		"devpm":              {subs: "ata,pci,pciex,rsx", description: "Device power management"},
+		"diag":               {description: "Diag (execute without param to show help)"},
+		"disp_err":           {description: "Displays errors"},
+		"duty":               {subs: "get,set,getmin,setmin,getmax,setmax,getinmin,setinmin,getinmax,setinmax", description: "Fan policy"},
+		"dve":                {subs: "help,set,save,show", description: "DVE chip parameters"},
+		"eepcsum":            {description: "Shows eeprom checksum"},
+		"eepromcheck":        {description: "Check eeprom", params: "id"},
+		"eeprominit":         {description: "Init eeprom", params: "id"},
+		"ejectsw":            {description: "Eject switch"},
+		"errlog":             {description: "Gets the error log"},
+		"fancon":             {description: "Does nothing"},
+		"fanconautotype":     {description: "Does nothing"},
+		"fanconmode":         {subs: "get", description: "Fan control mode"},
+		"fanconpolicy":       {subs: "get,set,getini,setini", description: "Fan control policy"},
+		"fandiag":            {description: "Fan test"},
+		"faninictrl":         {description: "Does nothing"},
+		"fanpol":             {description: "Does nothing"},
+		"fanservo":           {description: "Does nothing"},
+		"fantbl":             {subs: "get,set,getini,setini,gettable,settable", description: "Fan table"},
+		"firmud":             {description: "Firmware update"},
+		"geterrlog":          {description: "Gets error log", params: "id"},
+		"getrtc":             {description: "Gets rtc"},
+		"halt":               {description: "Halts syscon"},
+		"hdmi":               {description: "HDMI (various commands, use help)"},
+		"hdmiid":             {description: "Get HDMI id's"},
+		"hdmiid2":            {description: "Get HDMI id's"},
+		"hversion":           {description: "Platform ID"},
+		"hyst":               {subs: "get,set,getini,setini", description: "Temperature zones"},
+		"lasterrlog":         {description: "Last error from log"},
+		"ledmode":            {description: "Get led mode", params: "id,id"},
+		"LS":                 {description: "LabStation Mode"},
+		"ltstest":            {subs: "get,set", description: "?Temp related? values"},
+		"osbo":               {description: "Sets 0x2000F60"},
+		"patchcsum":          {description: "Patch checksum"},
+		"patchvereep":        {description: "Patch version eeprom"},
+		"patchverram":        {description: "Patch version ram"},
+		"poll":               {description: "Poll log"},
+		"portscan":           {description: "Scan port", params: "port"},
+		"powbtnmode":         {description: "Power button mode", params: "mode"},
+		"powerstate":         {description: "Get power state"},
+		"powersw":            {description: "Power switch"},
+		"powupcause":         {description: "Power up cause"},
+		"printmode":          {description: "Set printmode", params: "mode"},
+		"printpatch":         {description: "Prints patch"},
+		"r":                  {description: "Read byte from SC", params: "offset,length"},
+		"r16":                {description: "Read word from SC", params: "offset,length"},
+		"r32":                {description: "Read dword from SC", params: "offset,length"},
+		"r64":                {description: "Read qword from SC", params: "offset,length"},
+		"r64d":               {description: "Read qword data from SC", params: "offset,length"},
+		"rbe":                {description: "Read from BE", params: "offset"},
+		"recv":               {description: "Receive something"},
+		"resetsw":            {description: "Reset switch"},
+		"restartlogerrtoeep": {description: "Reenable error logging to eeprom"},
+		"revision":           {description: "Get softid"},
+		"rrsxc":              {description: "Read from RSX", params: "offset,length"},
+		"rtcreset":           {description: "Reset RTC"},
+		"scagv2":             {description: "Auth related?"},
+		"scasv2":             {description: "Auth related?"},
+		"scclose":            {description: "Close syscon"},
+		"scopen":             {description: "Open syscon"},
+		"send":               {description: "Send something", params: "variable"},
+		"shutdown":           {description: "PS3 shutdown"},
+		"startlogerrtsk":     {description: "Start error log task"},
+		"stoplogerrtoeep":    {description: "Stop error logging to eeprom"},
+		"stoplogerrtsk":      {description: "Stop error log task"},
+		"syspowdown":         {description: "System power down", params: "param,param,param"},
+		"task":               {description: "Print tasks"},
+		"thalttest":          {description: "Does nothing"},
+		"thermfatalmode":     {subs: "canboot,cannotboot", description: "Set thermal boot mode"},
+		"therrclr":           {description: "Thermal register clear"},
+		"thrm":               {description: "Does nothing"},
+		"tmp":                {description: "Get temperature", params: "zone"},
+		"trace":              {description: "Trace tasks (use help)"},
+		"trp":                {subs: "get,set,getini,setini", description: "Temperature zones"},
+		"tsensor":            {description: "Get raw temperature", params: "sensor"},
+		"tshutdown":          {subs: "get,set,getini,setini", description: "Thermal shutdown"},
+		"tshutdowntime":      {description: "Thermal shutdown time", params: "time"},
+		"tzone":              {description: "Show thermal zones"},
+		"version":            {description: "SC firmware version"},
+		"w":                  {description: "Write byte to SC", params: "offset,value"},
+		"w16":                {description: "Write word to SC", params: "offset,value"},
+		"w32":                {description: "Write bword to SC", params: "offset,value"},
+		"w64":                {description: "Write qword to SC", params: "offset,value"},
+		"wbe":                {description: "Write to BE", params: "offset,value"},
+		"wmmto":              {subs: "get", description: "Get watchdog timeout"},
+		"wrsxc":              {description: "Write to RSX", params: "offset,value"},
+		"xdrdiag":            {subs: "start,info,result", description: "XDR diag"},
+		"xiodiag":            {description: "XIO diag"},
+		"xrcv":               {description: "Xmodem receive"},
 	}
 )

@@ -57,7 +57,6 @@ func parseSW(resp string) (Result, error) {
 	lines := strings.Split(strings.TrimSpace(resp), "\n")
 	contents := make([]string, 0, len(lines))
 	for _, line := range lines {
-		line = strings.TrimSuffix(line, "\n")
 		idx := strings.LastIndex(line, ":")
 		if idx < 0 {
 			return Result{}, fmt.Errorf("sw: wrong response line %q", line)

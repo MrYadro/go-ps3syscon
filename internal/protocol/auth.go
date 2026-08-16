@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -60,10 +61,8 @@ func parseAuth1Response(hexResp string) (string, error) {
 	if !bytes.Equal(data[0x8:0x10], zero[0:0x8]) || !bytes.Equal(data[0x10:0x20], auth1Response) || !bytes.Equal(data[0x20:0x30], zero) {
 		return "", errors.New("auth: wrong Auth1 response body")
 	}
-	newData := append(append([]byte{}, data[0x8:0x10]...), data[0x0:0x8]...)
-	newData = append(newData, zero...)
-	newData = append(newData, zero...)
-	body := append(append([]byte{}, auth2RequestHeader...), encryptCBC(tb2SCKey, newData)...)
+	newData := slices.Concat(data[0x8:0x10], data[0x0:0x8], zero, zero)
+	body := slices.Concat(auth2RequestHeader, encryptCBC(tb2SCKey, newData))
 	return fmt.Sprintf("%02X", body), nil
 }
 

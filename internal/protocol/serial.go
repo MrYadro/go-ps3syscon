@@ -26,6 +26,9 @@ func OpenSerial(portName string, mode Mode, timeout time.Duration) (io.ReadWrite
 		p.Close()
 		return nil, err
 	}
-	p.ResetInputBuffer()
+	if err := p.ResetInputBuffer(); err != nil {
+		p.Close()
+		return nil, err
+	}
 	return p, nil
 }
