@@ -51,8 +51,8 @@ func (c *Conn) swSend(cmd string) error {
 }
 
 // parseSW decodes a multi-line response: every line ends with :{csum}
-// (verified over the bytes before the LAST colon) and the last line carries
-// the hex status code after its leading status-word token.
+// (verified over the bytes before the LAST colon) and the last line's
+// second space-token is the hex status code.
 func parseSW(resp string) (Result, error) {
 	lines := strings.Split(strings.TrimSpace(resp), "\n")
 	contents := make([]string, 0, len(lines))
@@ -73,25 +73,18 @@ func parseSW(resp string) (Result, error) {
 	}
 	raw := strings.Join(contents, "\n")
 	last := strings.Split(contents[len(contents)-1], " ")
-	// The status code is the first hex-parseable token after the leading
-	// status word (the reference reads ret[1]; scanning tolerates extra
-	// leading tokens on the last line).
-	codeIdx := -1
-	var code uint64
-	for i := 1; i < len(last); i++ {
-		if v, err := strconv.ParseUint(last[i], 16, 32); err == nil {
-			codeIdx, code = i, v
-			break
-		}
-	}
-	if codeIdx < 0 {
+	if len(last) < 2 {
 		// No status token: whole response is payload, code 0 (reference
 		// returns 0 with all lines).
 		return Result{Code: 0, Lines: contents, Raw: raw}, nil
 	}
+	code, err := strconv.ParseUint(last[1], 16, 32)
+	if err != nil {
+		return Result{Code: 0, Lines: contents, Raw: raw}, nil
+	}
 	res := Result{Code: uint32(code), Raw: raw}
 	if len(contents) == 1 {
-		res.Lines = last[codeIdx+1:]
+		res.Lines = last[2:]
 	} else {
 		res.Lines = contents[:len(contents)-1]
 	}

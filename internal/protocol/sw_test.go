@@ -35,7 +35,7 @@ func TestParseSW_MultiLine(t *testing.T) {
 	resp := strings.Join([]string{
 		swFrame("LINE1"),
 		swFrame("LINE2"),
-		swFrame("LAST OK 12 X"),
+		swFrame("LAST 12 X"),
 	}, "\n")
 	res, err := parseSW(resp)
 	if err != nil {
