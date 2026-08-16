@@ -123,5 +123,4 @@ func (c *Conn) readUntilIdle() ([]byte, error) {
 	}
 }
 
-func (c *Conn) cxrfCommand(cmd string) (Result, error) { return Result{}, nil }
-func (c *Conn) swCommand(cmd string) (Result, error)   { return Result{}, nil }
+func (c *Conn) swCommand(cmd string) (Result, error) { return Result{}, nil }
