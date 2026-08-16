@@ -1442,14 +1442,14 @@ Create `internal/console/commands.go` with this exact structure:
 
 - Line 1: `package console`
 - Line 2: blank
-- Line 3 onwards: copy `cmd/go-ps3syscon/vars.go` starting at its line 12 (the blank line right after the `auth = "..."` constant) through the end of the file (the `var ( ... )` wrapper closes over `scErrors`, `extCmd` and `intCmd`), **excluding** the crypto constants on lines 5-11 (`sc2TBKey` through `auth`) — those move to `internal/protocol/auth.go` in Task 5.
+- Line 3 onwards: copy `cmd/go-ps3syscon/vars.go` lines 12 through end-of-file — that is the blank line right after the `auth = "..."` constant, then `scErrors = map[string]string{`, ... unchanged table content ..., `intCmd = map[...]`, ..., `}`, and the closing `)`. **Excluding** the crypto constants on lines 5-11 (`sc2TBKey` through `auth`) — those move to `internal/protocol/auth.go` in Task 5.
 
-Concretely the result is: `package console`, blank, `var (`, blank, `scErrors = map[string]string{`, ... unchanged table content ..., `intCmd = map[...]`, ..., `}` , `)`. Do not reformat, rename, or reorder entries; values are frozen per the spec.
+Do not reformat, rename, or reorder entries; values are frozen per the spec.
 
 Verify with (zsh):
 
 ```zsh
-diff <(sed -n '12,$p' cmd/go-ps3syscon/vars.go) <(sed -n '4,$p' internal/console/commands.go)
+diff <(sed -n '12,$p' cmd/go-ps3syscon/vars.go) <(sed -n '3,$p' internal/console/commands.go)
 ```
 
 Expected: no output — zero content drift.
