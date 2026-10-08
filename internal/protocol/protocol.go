@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"strings"
-	"time"
 )
 
 // Mode identifies a syscon service-mode protocol dialect.
@@ -55,13 +54,12 @@ type Result struct {
 type Conn struct {
 	RW      io.ReadWriteCloser
 	Mode    Mode
-	Timeout time.Duration // read timeout hint for real ports
 	Verbose bool
 }
 
 // NewConn wraps rw with defaults for mode.
 func NewConn(rw io.ReadWriteCloser, mode Mode) *Conn {
-	return &Conn{RW: rw, Mode: mode, Timeout: time.Second}
+	return &Conn{RW: rw, Mode: mode}
 }
 
 // Command sends cmd and returns the parsed response.

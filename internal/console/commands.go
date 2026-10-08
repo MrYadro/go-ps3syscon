@@ -42,7 +42,7 @@ var (
 		"2033": "Thermal Sensor Error (IC3101)",
 		"2101": "BE Error (IC1001)",
 		"2102": "RSX Error (IC2001)",
-		"2103": "SB Error (IC3001",
+		"2103": "SB Error (IC3001)",
 		"2110": "Clock Generator Error (IC5001)",
 		"2111": "Clock Generator Error (IC5003)",
 		"2112": "Clock Generator Error (IC5002)",

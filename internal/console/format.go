@@ -30,7 +30,7 @@ func (c *Console) errinfo(arg string) string {
 	return parseErrorCode(arg)
 }
 
-var errCodeRe = regexp.MustCompile(`0xa[A-Fa-f0-9]{3}[1-4][0-9][0-6f][0-9f]`)
+var errCodeRe = regexp.MustCompile(`^0xa[A-Fa-f0-9]{3}[1-4][0-9][0-6f][0-9f]$`)
 
 func parseErrorCode(err string) string {
 	if !errCodeRe.MatchString(err) {

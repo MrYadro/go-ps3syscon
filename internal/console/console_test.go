@@ -58,6 +58,26 @@ func TestHandleLineErrinfoUnknown(t *testing.T) {
 	}
 }
 
+func TestHandleLineErrinfoEmbeddedCode(t *testing.T) {
+	cons, _ := testConsole(protocol.ModeCXRF, &fakeCommander{})
+	out, _ := cons.HandleLine("errinfo xx0xa0093003")
+	if out != "Unknown error!" {
+		t.Fatalf("out = %q, want \"Unknown error!\" for embedded code", out)
+	}
+}
+
+func TestHandleLineAuthPrefixForwardsCommand(t *testing.T) {
+	fc := &fakeCommander{}
+	cons, _ := testConsole(protocol.ModeCXR, fc)
+	out, _ := cons.HandleLine("auth1 00112233")
+	if fc.lastCmd != "auth1 00112233" {
+		t.Fatalf("lastCmd = %q, want forwarded device command", fc.lastCmd)
+	}
+	if out != "00000000 " {
+		t.Fatalf("out = %q", out)
+	}
+}
+
 func TestHandleLineCmdinfo(t *testing.T) {
 	cons, _ := testConsole(protocol.ModeCXRF, &fakeCommander{})
 	out, _ := cons.HandleLine("cmdinfo becount")

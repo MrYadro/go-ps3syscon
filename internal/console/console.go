@@ -44,7 +44,7 @@ func (c *Console) HandleLine(line string) (string, bool) {
 		return "", true
 	case line == "help":
 		return c.usage(), false
-	case strings.HasPrefix(line, "auth"):
+	case line == "auth":
 		out, err := c.SC.Auth()
 		if err != nil {
 			return "Error: " + err.Error(), false
